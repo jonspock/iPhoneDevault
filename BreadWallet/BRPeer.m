@@ -232,9 +232,12 @@ services:(uint64_t)services
             ((void (^)(BOOL))self.pongHandlers[0])(NO);
             [self.pongHandlers removeObjectAtIndex:0];
         }
-        
-        [self.delegate peer:self disconnectedWithError:error];
     });
+  
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self.delegate peer:self disconnectedWithError:error];
+    });
+  
 }
 
 - (void)error:(NSString *)message, ... NS_FORMAT_FUNCTION(1,2)
