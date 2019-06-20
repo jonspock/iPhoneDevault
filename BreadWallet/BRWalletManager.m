@@ -104,8 +104,7 @@
 
 #endif
 //#define MAZA_PRICE_URL @"https://coinmarketcap-nexuist.rhcloud.com/api/dash/price"
-#define MAZA_PRICE_URL @"https://min-api.cryptocompare.com/data/price?fsym=MZC&tsyms=USD"
-
+#define MAZA_PRICE_URL @"https://api.coingecko.com/api/v3/simple/price?ids=maza&vs_currencies=usd"
 
 static BOOL setKeychainData(NSData *data, NSString *key, BOOL authenticated)
 {
@@ -1015,7 +1014,8 @@ static NSString *getKeychainString(NSString *key, NSError **error)
                                              return;
                                          }
                                          NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                                         double usd = [[json objectForKey:@"USD"] doubleValue];
+                                         id maza = json[@"maza"];            
+                                         double usd = [[maza objectForKey:@"usd"] doubleValue];
                                          NSNumber *price = [NSNumber numberWithDouble:usd];
                                          self.mazaUSDPrice = price;
                                          NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
