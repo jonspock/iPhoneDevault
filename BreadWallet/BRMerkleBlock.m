@@ -392,10 +392,6 @@ UInt256 multiplyThis32 (UInt256 a,uint32_t b)
 }
 
 -(bool)verifyLWMAFromPreviousBlocks:(NSMutableDictionary *)previousBlocks andTransitionTime:(uint32_t)time {
-    
-    int32_t nActualTimespan = 0;
-    int64_t lastBlockTime = 0;
-    uint32_t blockCount = 0;
     UInt256 sum_target = UINT256_ZERO;
     BRMerkleBlock *previousBlock = previousBlocks[uint256_obj(self.prevBlock)];
     
@@ -411,12 +407,33 @@ UInt256 multiplyThis32 (UInt256 a,uint32_t b)
     const int dnorm = 10;
 
     int t = 0, j = 0;
-    
-    BRMerkleBlock *currentBlock = previousBlock;
-    // loop over the past n blocks, where n == PastBlocksMax
-    for (blockCount = 1; currentBlock && currentBlock.height > 0 && blockCount<=N; blockCount++) {
+  
+    //int nHeight = previousBlock.height + 1;
+
+    // Create Array of the last LWMA_BLOCKS with index starting at 0 for the oldest block
+  
+    NSMutableArray *sortedBlocks;
+    sortedBlocks = [[NSMutableArray alloc] initWithCapacity:LWMA_BLOCKS];
+
+    // First, index backwards since that is what we have
+    UInt256 index = self.prevBlock;
+    for (int i=0; i < N; i++) {
+      BRMerkleBlock *this_block = previousBlocks[uint256_obj(index)];
+      [sortedBlocks addObject:this_block];
+      index = this_block.prevBlock;
+    }
+    // one block older than oldest in the array
+    previousBlock = previousBlocks[uint256_obj(index)];
+
+    // Now reverse
+    sortedBlocks=[[[sortedBlocks reverseObjectEnumerator] allObjects] mutableCopy];
+
+  
+    for (int i=0; i < N; i++) {
+        BRMerkleBlock *block = sortedBlocks[i];
+        if (i > 0) previousBlock = sortedBlocks[i-1];
       
-        int64_t currentBlockTime = currentBlock.timestamp;
+        int64_t currentBlockTime = block.timestamp;
         int64_t previousBlockTime = previousBlock.timestamp;
         int64_t solvetime = currentBlockTime - previousBlockTime;
 
@@ -428,7 +445,7 @@ UInt256 multiplyThis32 (UInt256 a,uint32_t b)
         // Target sum divided by a factor, (k N^2).
         // The factor is a part of the final equation. However we divide sum_target here to avoid
         // potential overflow.
-        UInt256 target = setCompact(currentBlock.target);
+        UInt256 target = setCompact(block.target);
         sum_target = add(sum_target,divide_by(target, (k * N * N)));
     }
 

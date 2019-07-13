@@ -25,10 +25,10 @@
 
 #import <Foundation/Foundation.h>
 
-#define BLOCK_DIFFICULTY_INTERVAL 2016      // number of blocks between difficulty target adjustments
 #define BLOCK_INTERVAL_SECS 120 // 2 minute block for Maza
 #define BLOCK_UNKNOWN_HEIGHT      INT32_MAX
 #define LWMA_BLOCKS 72
+#define BLOCK_DIFFICULTY_INTERVAL 72 
 
 typedef union _UInt256 UInt256;
 

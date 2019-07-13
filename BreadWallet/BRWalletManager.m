@@ -90,21 +90,14 @@
 
 #define UNSPENT_URL @"http://%@insight.maza.siampm.com/api/addr/%@/utxo"
 #define BITCOIN_TICKER_URL  @"https://bitpay.com/rates"
-#define CRYPTSY_TICKER_URL  @"http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=155"
-#define POLONIEX_TICKER_URL  @"https://poloniex.com/public?command=returnOrderBook&currencyPair=BTC_DVT&depth=1"
-#define BITFINEX_TICKER_URL  @"https://api.bitfinex.com/v1/pubticker/drkbtc"
 
-#define CRYPTSY_DVT_BTC_PRICE_KEY  @"CRYPTSY_DVT_BTC_PRICE"
-#define CRYPTSY_DVT_BTC_UPDATE_TIME_KEY  @"CRYPTSY_DVT_BTC_UPDATE_TIME"
-#define POLONIEX_DVT_BTC_PRICE_KEY  @"POLONIEX_DVT_BTC_PRICE"
-#define POLONIEX_DVT_BTC_UPDATE_TIME_KEY  @"POLONIEX_DVT_BTC_UPDATE_TIME"
 #define SPEND_LIMIT_AMOUNT_KEY      @"SPEND_LIMIT_AMOUNT"
 #define SECURE_TIME_KEY             @"SECURE_TIME"
 #define FEE_PER_KB_KEY              @"FEE_PER_KB"
 
 #endif
 //#define DVT_PRICE_URL @"https://coinmarketcap-nexuist.rhcloud.com/api/dvt/price"
-#define DVT_PRICE_URL @"https://min-api.cryptocompare.com/data/price?fsym=DVT&tsyms=USD"
+#define DVT_PRICE_URL @"https://min-api.cryptocompare.com/data/price?fsym=MZC&tsyms=USD"
 
 
 static BOOL setKeychainData(NSData *data, NSString *key, BOOL authenticated)

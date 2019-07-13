@@ -1366,11 +1366,7 @@ static const char *dns_seeds[] = {
 
     { // WAS : hit a difficulty transition, find previous transition time
         BRMerkleBlock *b = block;
-        for (uint32_t i = 0; b && i < BLOCK_DIFFICULTY_INTERVAL; i++)
-        {
-            b = self.blocks[uint256_obj(b.prevBlock)];
-        }
-
+      /*
         [[BRMerkleBlockEntity context] performBlock:^{ // save transition blocks to core data immediately
             @autoreleasepool {
                 BRMerkleBlockEntity *e = [BRMerkleBlockEntity objectsMatching:@"blockHash == %@",
@@ -1382,16 +1378,8 @@ static const char *dns_seeds[] = {
             
             [BRMerkleBlockEntity saveContext]; // persist core data to disk
         }];
-
+*/
         transitionTime = b.timestamp;
-        
-        while (b) { // free up some memory
-            b = self.blocks[uint256_obj(b.prevBlock)];
-
-            if (b && (b.height % BLOCK_DIFFICULTY_INTERVAL) != 0) {
-                [self.blocks removeObjectForKey:uint256_obj(b.blockHash)];
-            }
-        }
     }
     // verify block difficulty if block is past last checkpoint
     if ((block.height > (checkpoint_array[CHECKPOINT_COUNT - 1].height + LWMA_BLOCKS)) &&
