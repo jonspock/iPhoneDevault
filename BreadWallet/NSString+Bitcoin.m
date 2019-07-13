@@ -105,10 +105,10 @@ static const UniChar base58chars[] = {
     NSArray *elem = [script scriptElements];
     NSUInteger l = elem.count;
     NSMutableData *d = [NSMutableData data];
-    uint8_t v = MAZA_PUBKEY_ADDRESS;
+    uint8_t v = DVT_PUBKEY_ADDRESS;
 
-#if MAZA_TESTNET
-    v = MAZA_PUBKEY_ADDRESS_TEST;
+#if DVT_TESTNET
+    v = DVT_PUBKEY_ADDRESS_TEST;
 #endif
 
     if (l == 5 && [elem[0] intValue] == OP_DUP && [elem[1] intValue] == OP_HASH160 && [elem[2] intValue] == 20 &&
@@ -119,9 +119,9 @@ static const UniChar base58chars[] = {
     }
     else if (l == 3 && [elem[0] intValue] == OP_HASH160 && [elem[1] intValue] == 20 && [elem[2] intValue] == OP_EQUAL) {
         // pay-to-script-hash scriptPubKey
-        v = MAZA_SCRIPT_ADDRESS;
-#if MAZA_TESTNET
-        v = MAZA_SCRIPT_ADDRESS_TEST;
+        v = DVT_SCRIPT_ADDRESS;
+#if DVT_TESTNET
+        v = DVT_SCRIPT_ADDRESS_TEST;
 #endif
         [d appendBytes:&v length:1];
         [d appendData:elem[1]];
@@ -143,10 +143,10 @@ static const UniChar base58chars[] = {
     NSArray *elem = [script scriptElements];
     NSUInteger l = elem.count;
     NSMutableData *d = [NSMutableData data];
-    uint8_t v = MAZA_PUBKEY_ADDRESS;
+    uint8_t v = DVT_PUBKEY_ADDRESS;
 
-#if MAZA_TESTNET
-    v = MAZA_PUBKEY_ADDRESS_TEST;
+#if DVT_TESTNET
+    v = DVT_PUBKEY_ADDRESS_TEST;
 #endif
 
     if (l >= 2 && [elem[l - 2] intValue] <= OP_PUSHDATA4 && [elem[l - 2] intValue] > 0 &&
@@ -156,9 +156,9 @@ static const UniChar base58chars[] = {
     }
     else if (l >= 2 && [elem[l - 2] intValue] <= OP_PUSHDATA4 && [elem[l - 2] intValue] > 0 &&
              [elem[l - 1] intValue] <= OP_PUSHDATA4 && [elem[l - 1] intValue] > 0) { // pay-to-script-hash scriptSig
-        v = MAZA_SCRIPT_ADDRESS;
-#if MAZA_TESTNET
-        v = MAZA_SCRIPT_ADDRESS_TEST;
+        v = DVT_SCRIPT_ADDRESS;
+#if DVT_TESTNET
+        v = DVT_SCRIPT_ADDRESS_TEST;
 #endif
         [d appendBytes:&v length:1];
         [d appendBytes:[elem[l - 1] hash160].u8 length:sizeof(UInt160)];
@@ -298,7 +298,7 @@ static const UniChar base58chars[] = {
     return (d.length == 160/8 + 1) ? [d subdataWithRange:NSMakeRange(1, d.length - 1)] : nil;
 }
 
-- (BOOL)isValidMazaAddress
+- (BOOL)isValidCoinAddress
 {
     NSData *d = self.base58checkToData;
     
@@ -306,25 +306,25 @@ static const UniChar base58chars[] = {
     
     uint8_t version = *(const uint8_t *)d.bytes;
         
-#if MAZA_TESTNET
-    return (version == MAZA_PUBKEY_ADDRESS_TEST || version == MAZA_SCRIPT_ADDRESS_TEST) ? YES : NO;
+#if DVT_TESTNET
+    return (version == DVT_PUBKEY_ADDRESS_TEST || version == DVT_SCRIPT_ADDRESS_TEST) ? YES : NO;
 #endif
 
-    return (version == MAZA_PUBKEY_ADDRESS || version == MAZA_SCRIPT_ADDRESS) ? YES : NO;
+    return (version == DVT_PUBKEY_ADDRESS || version == DVT_SCRIPT_ADDRESS) ? YES : NO;
 }
 
-- (BOOL)isValidMazaPrivateKey
+- (BOOL)isValidCoinPrivateKey
 {
     NSData *d = self.base58checkToData;
     
     if (d.length == 33 || d.length == 34) { // wallet sweep format: https://en.bitcoin.it/wiki/Wallet_import_format
-#if MAZA_TESTNET
-        return (*(const uint8_t *)d.bytes == MAZA_PRIVKEY_TEST) ? YES : NO;
+#if DVT_TESTNET
+        return (*(const uint8_t *)d.bytes == DVT_PRIVKEY_TEST) ? YES : NO;
 #else
-        return (*(const uint8_t *)d.bytes == MAZA_PRIVKEY) ? YES : NO;
+        return (*(const uint8_t *)d.bytes == DVT_PRIVKEY) ? YES : NO;
 #endif
     }
-#ifndef USE_MAZA
+#ifndef USE_DVT
     else if ((self.length == 30 || self.length == 22) && [self characterAtIndex:0] == 'S') { // mini private key format
         NSMutableData *d = [NSMutableData secureDataWithCapacity:self.length + 1];
 
@@ -339,7 +339,7 @@ static const UniChar base58chars[] = {
 }
 
 // BIP38 encrypted keys: https://github.com/bitcoin/bips/blob/master/bip-0038.mediawiki
-- (BOOL)isValidMazaBIP38Key
+- (BOOL)isValidCoinBIP38Key
 {
     NSData *d = self.base58checkToData;
 

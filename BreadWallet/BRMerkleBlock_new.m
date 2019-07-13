@@ -111,7 +111,7 @@
     [d appendUInt32:_timestamp];
     [d appendUInt32:_target];
     [d appendUInt32:_nonce];
-#ifdef USE_MAZA
+#ifdef USE_DVT
     _blockHash = d.x11;
 #else
     _blockHash = d.SHA256_2;
@@ -372,7 +372,7 @@ UInt256 multiplyThis32 (UInt256 a,uint32_t b)
     }
     return a;
 }
-#ifdef USE_MAZA
+#ifdef USE_DVT
 - (BOOL)verifyDifficultyWithPreviousBlocks:(NSMutableDictionary *)previousBlocks
 {
     uint32_t darkGravityWaveTarget = [self darkGravityWaveTargetWithPreviousBlocks:previousBlocks];
@@ -469,7 +469,7 @@ UInt256 multiplyThis32 (UInt256 a,uint32_t b)
     if (! uint256_eq(_prevBlock, previous.blockHash) || _height != previous.height + 1) return NO;
     if ((_height % BLOCK_DIFFICULTY_INTERVAL) == 0 && time == 0) return NO;
 
-#if MAZA_TESTNET
+#if DVT_TESTNET
     //TODO: implement testnet difficulty rule check
     return YES; // don't worry about difficulty on testnet for now
 #endif

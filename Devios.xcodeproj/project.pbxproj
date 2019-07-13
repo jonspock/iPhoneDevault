@@ -243,7 +243,7 @@
 		5219AAEE1D73B2CB004BD9C0 /* BRAWReceiveMoneyInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRAWReceiveMoneyInterfaceController.swift; sourceTree = "<group>"; };
 		5219AAEF1D73B2CB004BD9C0 /* BRAWTransactionRowControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRAWTransactionRowControl.swift; sourceTree = "<group>"; };
 		5219AAF01D73B2CB004BD9C0 /* BRAWWeakTimerTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRAWWeakTimerTarget.swift; sourceTree = "<group>"; };
-		5219AAF81D73B40F004BD9C0 /* maza-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = "maza-Bridging-Header.h"; path = "BreadWallet/maza-Bridging-Header.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		5219AAF81D73B40F004BD9C0 /* devios-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = "devios-Bridging-Header.h"; path = "BreadWallet/devios-Bridging-Header.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5220109E1F3647B000A00D4B /* BRAPIProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRAPIProxy.swift; sourceTree = "<group>"; };
 		5220109F1F3647B000A00D4B /* BRAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRAPIClient.swift; sourceTree = "<group>"; };
 		524F39BF1D72267E00F997FB /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -253,11 +253,11 @@
 		524F39D91D722A6D00F997FB /* BRTodayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRTodayViewController.m; sourceTree = "<group>"; };
 		524F39DA1D722A6D00F997FB /* BRTodayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRTodayViewController.h; sourceTree = "<group>"; };
 		52569C9E1D71F266001E629E /* BRWalletConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BRWalletConstants.m; path = BreadWallet/BRWalletConstants.m; sourceTree = "<group>"; };
-		529A9F1E1D7B6F1800B9663C /* Maza-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Maza-Prefix.pch"; sourceTree = "<group>"; };
+		529A9F1E1D7B6F1800B9663C /* Devios-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Devios-Prefix.pch"; sourceTree = "<group>"; };
 		52AD8B491F41FB1600D70424 /* WatchApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WatchApp.entitlements; sourceTree = "<group>"; };
 		52AD8B4A1F41FB2200D70424 /* WatchApp Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "WatchApp Extension.entitlements"; sourceTree = "<group>"; };
 		52AD8B4B1F43953B00D70424 /* FixedPeers.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FixedPeers.plist; sourceTree = "<group>"; };
-		52D30AEA1D71319900E8DF36 /* maza.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = maza.entitlements; sourceTree = "<group>"; };
+		52D30AEA1D71319900E8DF36 /* devios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = devios.entitlements; sourceTree = "<group>"; };
 		7509C10C1AF3076000D03FD5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		7509C10E1AF3076100D03FD5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
 		7509C1101AF3720100D03FD5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
@@ -400,14 +400,14 @@
 		75CE194C1B9642EB000778E4 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Main.strings; sourceTree = "<group>"; };
 		75CE194E1B9642EB000778E4 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
 		75CE50B51B5216F100DBC18C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = BreadWalletTests/Info.plist; sourceTree = SOURCE_ROOT; };
-		75D5F3BE191EC270004AB296 /* maza.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = maza.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		75D5F3BE191EC270004AB296 /* devios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = devios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75D5F3C9191EC270004AB296 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75D5F3CD191EC270004AB296 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		75D5F3D0191EC270004AB296 /* BRAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BRAppDelegate.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		75D5F3D1191EC270004AB296 /* BRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BRAppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		75D5F3DD191EC270004AB296 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		75D5F3DF191EC270004AB296 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		75D5F3E5191EC270004AB296 /* MazaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MazaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		75D5F3E5191EC270004AB296 /* DeviosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeviosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		75D5F3F2191EC270004AB296 /* BreadWalletTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BreadWalletTests.m; sourceTree = "<group>"; };
 		75DE023F1B0EB7990027FF08 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Main.strings; sourceTree = "<group>"; };
 		75DE02411B0EB79A0027FF08 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
@@ -800,9 +800,9 @@
 		75D5F3B5191EC270004AB296 = {
 			isa = PBXGroup;
 			children = (
-				5219AAF81D73B40F004BD9C0 /* maza-Bridging-Header.h */,
+				5219AAF81D73B40F004BD9C0 /* devios-Bridging-Header.h */,
 				52569C9E1D71F266001E629E /* BRWalletConstants.m */,
-				52D30AEA1D71319900E8DF36 /* maza.entitlements */,
+				52D30AEA1D71319900E8DF36 /* devios.entitlements */,
 				75D5F3C7191EC270004AB296 /* BreadWallet */,
 				75D5F3EC191EC270004AB296 /* BreadWalletTests */,
 				524F39C11D72267E00F997FB /* TodayExtension */,
@@ -816,8 +816,8 @@
 		75D5F3BF191EC270004AB296 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				75D5F3BE191EC270004AB296 /* maza.app */,
-				75D5F3E5191EC270004AB296 /* MazaTests.xctest */,
+				75D5F3BE191EC270004AB296 /* devios.app */,
+				75D5F3E5191EC270004AB296 /* DeviosTests.xctest */,
 				524F39BF1D72267E00F997FB /* TodayExtension.appex */,
 				5219AAAC1D738F8D004BD9C0 /* WatchApp.app */,
 				5219AAB81D738F8E004BD9C0 /* WatchApp Extension.appex */,
@@ -874,7 +874,7 @@
 				75D5F3C9191EC270004AB296 /* Info.plist */,
 				757E09971ADB8EEB006FD352 /* Localizable.strings */,
 				75D5F3CD191EC270004AB296 /* main.m */,
-				529A9F1E1D7B6F1800B9663C /* Maza-Prefix.pch */,
+				529A9F1E1D7B6F1800B9663C /* Devios-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1000,9 +1000,9 @@
 			productReference = 524F39BF1D72267E00F997FB /* TodayExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		75D5F3BD191EC270004AB296 /* maza */ = {
+		75D5F3BD191EC270004AB296 /* devios */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 75D5F3F6191EC270004AB296 /* Build configuration list for PBXNativeTarget "maza" */;
+			buildConfigurationList = 75D5F3F6191EC270004AB296 /* Build configuration list for PBXNativeTarget "devios" */;
 			buildPhases = (
 				75D5F3BA191EC270004AB296 /* Sources */,
 				75D5F3BB191EC270004AB296 /* Frameworks */,
@@ -1017,14 +1017,14 @@
 				524F39CA1D72267E00F997FB /* PBXTargetDependency */,
 				5219AACD1D738F8E004BD9C0 /* PBXTargetDependency */,
 			);
-			name = maza;
+			name = devios;
 			productName = BreadWallet;
-			productReference = 75D5F3BE191EC270004AB296 /* maza.app */;
+			productReference = 75D5F3BE191EC270004AB296 /* devios.app */;
 			productType = "com.apple.product-type.application";
 		};
-		75D5F3E4191EC270004AB296 /* MazaTests */ = {
+		75D5F3E4191EC270004AB296 /* DeviosTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 75D5F3F9191EC270004AB296 /* Build configuration list for PBXNativeTarget "MazaTests" */;
+			buildConfigurationList = 75D5F3F9191EC270004AB296 /* Build configuration list for PBXNativeTarget "DeviosTests" */;
 			buildPhases = (
 				75D5F3E1191EC270004AB296 /* Sources */,
 				75D5F3E2191EC270004AB296 /* Frameworks */,
@@ -1035,9 +1035,9 @@
 			dependencies = (
 				75D5F3EB191EC270004AB296 /* PBXTargetDependency */,
 			);
-			name = MazaTests;
+			name = DeviosTests;
 			productName = BreadWalletTests;
-			productReference = 75D5F3E5191EC270004AB296 /* MazaTests.xctest */;
+			productReference = 75D5F3E5191EC270004AB296 /* DeviosTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -1111,7 +1111,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 75D5F3B9191EC270004AB296 /* Build configuration list for PBXProject "Maza" */;
+			buildConfigurationList = 75D5F3B9191EC270004AB296 /* Build configuration list for PBXProject "Devios" */;
 			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1143,8 +1143,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				75D5F3BD191EC270004AB296 /* maza */,
-				75D5F3E4191EC270004AB296 /* MazaTests */,
+				75D5F3BD191EC270004AB296 /* devios */,
+				75D5F3E4191EC270004AB296 /* DeviosTests */,
 				75001D3D1A1EE89500585F55 /* submodules */,
 				524F39BE1D72267E00F997FB /* TodayExtension */,
 				5219AAAB1D738F8D004BD9C0 /* WatchApp */,
@@ -1344,7 +1344,7 @@
 		};
 		75D5F3EB191EC270004AB296 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 75D5F3BD191EC270004AB296 /* maza */;
+			target = 75D5F3BD191EC270004AB296 /* devios */;
 			targetProxy = 75D5F3EA191EC270004AB296 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1462,7 +1462,7 @@
 				);
 				INFOPLIST_FILE = "WatchApp Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mazacoin.maza.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = org.jonspock.devios.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1485,7 +1485,7 @@
 				DEVELOPMENT_TEAM = MXYQUM355V;
 				INFOPLIST_FILE = "WatchApp Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mazacoin.maza.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = org.jonspock.devios.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1513,7 +1513,7 @@
 				);
 				IBSC_MODULE = WatchApp_Extension;
 				INFOPLIST_FILE = WatchApp/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = org.mazacoin.maza.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = org.jonspock.devios.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1537,7 +1537,7 @@
 				DEVELOPMENT_TEAM = MXYQUM355V;
 				IBSC_MODULE = WatchApp_Extension;
 				INFOPLIST_FILE = WatchApp/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = org.mazacoin.maza.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = org.jonspock.devios.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1562,7 +1562,7 @@
 				);
 				INFOPLIST_FILE = TodayExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mazacoin.maza.TodayExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = org.jonspock.devios.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
@@ -1580,7 +1580,7 @@
 				DEVELOPMENT_TEAM = MXYQUM355V;
 				INFOPLIST_FILE = TodayExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mazacoin.maza.TodayExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = org.jonspock.devios.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
@@ -1642,7 +1642,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					USE_MAZA,
+					USE_DVT,
 					"DEBUG=1",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1722,16 +1722,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = maza.entitlements;
+				CODE_SIGN_ENTITLEMENTS = devios.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MXYQUM355V;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "BreadWallet/Maza-Prefix.pch";
+				GCC_PREFIX_HEADER = "BreadWallet/Devios-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
-					USE_MAZA,
+					USE_DVT,
 					HIDE_DEPRECATED,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -1748,11 +1748,11 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.mazacoin.maza;
+				PRODUCT_BUNDLE_IDENTIFIER = org.jonspock.devios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "BreadWallet/maza-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "BreadWallet/devios-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/CoreBitcoin";
@@ -1766,15 +1766,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = maza.entitlements;
+				CODE_SIGN_ENTITLEMENTS = devios.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MXYQUM355V;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "BreadWallet/Maza-Prefix.pch";
+				GCC_PREFIX_HEADER = "BreadWallet/Devios-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					USE_MAZA,
+					USE_DVT,
 					HIDE_DEPRECATED,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -1791,11 +1791,11 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.mazacoin.maza;
+				PRODUCT_BUNDLE_IDENTIFIER = org.jonspock.devios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "BreadWallet/maza-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "BreadWallet/devios-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/CoreBitcoin";
 			};
@@ -1804,7 +1804,7 @@
 		75D5F3FA191EC270004AB296 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/maza.app/maza";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/devios.app/devios";
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = MXYQUM355V;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -1816,8 +1816,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.maza.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = MazaTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.devios.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = DeviosTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "BreadWalletTests/BreadWalletTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -1828,7 +1828,7 @@
 		75D5F3FB191EC270004AB296 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/maza.app/maza";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/devios.app/devios";
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = MXYQUM355V;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -1840,8 +1840,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.maza.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = MazaTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.devios.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = DeviosTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "BreadWalletTests/BreadWalletTests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -1887,7 +1887,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		75D5F3B9191EC270004AB296 /* Build configuration list for PBXProject "Maza" */ = {
+		75D5F3B9191EC270004AB296 /* Build configuration list for PBXProject "Devios" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				75D5F3F4191EC270004AB296 /* Debug */,
@@ -1896,7 +1896,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		75D5F3F6191EC270004AB296 /* Build configuration list for PBXNativeTarget "maza" */ = {
+		75D5F3F6191EC270004AB296 /* Build configuration list for PBXNativeTarget "devios" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				75D5F3F7191EC270004AB296 /* Debug */,
@@ -1905,7 +1905,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		75D5F3F9191EC270004AB296 /* Build configuration list for PBXNativeTarget "MazaTests" */ = {
+		75D5F3F9191EC270004AB296 /* Build configuration list for PBXNativeTarget "DeviosTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				75D5F3FA191EC270004AB296 /* Debug */,

@@ -27,7 +27,7 @@
 
 @class BRPaymentProtocolRequest, BRPaymentProtocolPayment, BRPaymentProtocolACK;
 
-// BIP21 maza payment request URI https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
+// BIP21 payment request URI https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
 @interface BRPaymentRequest : NSObject
 
 @property (nonatomic, strong) NSString *scheme;

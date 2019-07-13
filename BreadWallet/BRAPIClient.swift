@@ -30,14 +30,14 @@ import Foundation
 let BRAPIClientErrorDomain = "BRApiClientErrorDomain"
 
 // these flags map to api feature flag name values
-// eg "buy-maza-with-cash" is a persistent name in the /me/features list
+// eg "buy-xxx-with-cash" is a persistent name in the /me/features list
 @objc public enum BRFeatureFlags: Int, CustomStringConvertible {
-    case buyMaza
+    case buyxxx
     case earlyAccess
     
     public var description: String {
         switch self {
-        case .buyMaza: return "buy-maza";
+        case .buyxxx: return "buy-xxx";
         case .earlyAccess: return "early-access";
         }
     }

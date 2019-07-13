@@ -66,7 +66,7 @@ size_t secp256k1_point_mul(void * _Nonnull r, const void * _Nullable p, UInt256 
 - (nullable NSData *)sign:(UInt256)md;
 - (BOOL)verify:(UInt256)md signature:(nonnull NSData *)sig;
 
-// Pieter Wuille's compact signature encoding used for maza message signing
+// Pieter Wuille's compact signature encoding used for message signing
 // to verify a compact signature, recover a public key from the signature and verify that it matches the signer's pubkey
 - (nullable NSData *)compactSign:(UInt256)md;
 

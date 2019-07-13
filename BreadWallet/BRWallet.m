@@ -592,7 +592,7 @@ masterPublicKey:(NSData *)masterPublicKey seed:(NSData *(^)(NSString *authprompt
     //TODO: handle tx replacement with input sequence numbers (now replacements appear invalid until confirmation)
     NSLog(@"[BRWallet] received unseen transaction %@", transaction);
     
-#ifdef USE_MAZA_ALERT
+#ifdef USE_DVT_ALERT
     dispatch_async(dispatch_get_main_queue(), ^{
         [[[UIAlertView alloc] initWithTitle:@"Received an unseen transaction" message:@"Please check transactions for details!" delegate:nil
                           cancelButtonTitle:@"OK" otherButtonTitles:nil] show];

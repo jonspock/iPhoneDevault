@@ -41,9 +41,9 @@
 #import <sys/stat.h>
 #import <mach-o/dyld.h>
 
-#define BALANCE_TIP NSLocalizedString(@"This is your maza balance. Maza is a currency. "\
+#define BALANCE_TIP NSLocalizedString(@"This is your balance. "\
                                        "The exchange rate changes with the market.", nil)
-#define BITS_TIP    NSLocalizedString(@"%@ is for 'bits'. %@ = 1 maza.", nil)
+#define BITS_TIP    NSLocalizedString(@"%@ is for 'bits'. %@ = 1 coin.", nil)
 
 #define BACKUP_DIALOG_TIME_KEY @"BACKUP_DIALOG_TIME"
 #define BALANCE_KEY            @"BALANCE"
@@ -129,7 +129,7 @@
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     
     // Try to get price for startup XXX
-    ///[manager getMazaPrice];
+    ///[manager getCoinPrice];
 
     self.urlObserver =
         [[NSNotificationCenter defaultCenter] addObserverForName:BRURLNotification object:nil queue:nil
@@ -209,7 +209,7 @@
                 [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", nil)
                   message:NSLocalizedString(@"DEVICE SECURITY COMPROMISED\n"
                                             "Any 'jailbreak' app can access any other app's keychain data "
-                                            "(and steal your maza). "
+                                            "(and steal your coins). "
                                             "Wipe this wallet immediately and restore on a secure device.", nil)
                  delegate:self cancelButtonTitle:NSLocalizedString(@"ignore", nil)
                  otherButtonTitles:NSLocalizedString(@"wipe", nil), nil] show];
@@ -218,7 +218,7 @@
                 [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", nil)
                   message:NSLocalizedString(@"DEVICE SECURITY COMPROMISED\n"
                                             "Any 'jailbreak' app can access any other app's keychain data "
-                                            "(and steal your maza).", nil)
+                                            "(and steal your coins).", nil)
                   delegate:self cancelButtonTitle:NSLocalizedString(@"ignore", nil)
                   otherButtonTitles:NSLocalizedString(@"close app", nil), nil] show];
             }
@@ -344,7 +344,7 @@
     
     self.navigationController.delegate = self;
 
-#if MAZA_TESTNET
+#if DVT_TESTNET
     UILabel *label = [UILabel new];
 
     label.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:13.0];
@@ -395,7 +395,7 @@
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", nil)
           message:NSLocalizedString(@"DEVICE SECURITY COMPROMISED\n"
                                     "Any 'jailbreak' app can access any other app's keychain data "
-                                    "(and steal your maza). "
+                                    "(and steal your coins). "
                                     "Wipe this wallet immediately and restore on a secure device.", nil)
           delegate:self cancelButtonTitle:NSLocalizedString(@"ignore", nil)
           otherButtonTitles:NSLocalizedString(@"wipe", nil), nil] show];
@@ -404,7 +404,7 @@
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", nil)
           message:NSLocalizedString(@"DEVICE SECURITY COMPROMISED\n"
                                     "Any 'jailbreak' app can access any other app's keychain data "
-                                    "(and steal your maza).", nil)
+                                    "(and steal your coins).", nil)
           delegate:self cancelButtonTitle:NSLocalizedString(@"ignore", nil)
           otherButtonTitles:NSLocalizedString(@"close app", nil), nil] show];
     }
@@ -559,7 +559,7 @@
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", nil)
           message:[NSString stringWithFormat:@"\n%@\n\n%@\n\n%@\n",
                    [NSLocalizedString(@"\nDO NOT let anyone see your recovery\n"
-                                      "phrase or they can spend your maza.\n", nil)
+                                      "phrase or they can spend your coins.\n", nil)
                     stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]],
                    [NSLocalizedString(@"\nNEVER type your recovery phrase into\n"
                                       "password managers or elsewhere.\n"
@@ -801,7 +801,7 @@
     [defs setDouble:now forKey:BACKUP_DIALOG_TIME_KEY];
     
     [[[UIAlertView alloc]
-      initWithTitle:(first) ? NSLocalizedString(@"you received maza!", nil) : NSLocalizedString(@"IMPORTANT", nil)
+      initWithTitle:(first) ? NSLocalizedString(@"you received coins!", nil) : NSLocalizedString(@"IMPORTANT", nil)
       message:[NSString stringWithFormat:NSLocalizedString(@"\n%@\n\nif you ever lose your phone, you will need it to "
                                                            "recover your wallet", nil),
                (first) ? NSLocalizedString(@"next, write down your recovery phrase", nil) :

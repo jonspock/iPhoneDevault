@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Maza</string>
+	<string>Devios</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -15,7 +15,7 @@
 			<string>Maza Payment Request</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>maza.paymentrequest</string>
+				<string>devios.paymentrequest</string>
 			</array>
 		</dict>
 		<dict>
@@ -25,7 +25,7 @@
 			<string>Maza Payment</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>maza.payment</string>
+				<string>devios.payment</string>
 			</array>
 		</dict>
 		<dict>
@@ -35,7 +35,7 @@
 			<string>Maza Payment ACK</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>maza.paymentack</string>
+				<string>devios.paymentack</string>
 			</array>
 		</dict>
 	</array>
@@ -59,20 +59,20 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>maza</string>
+			<string>devios</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>maza</string>
+				<string>devios</string>
 			</array>
 		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>org.mazacoin.maza</string>
+			<string>org.jonspock.devios</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>maza</string>
+				<string>devios</string>
 			</array>
 		</dict>
 	</array>
@@ -123,11 +123,11 @@
 			<key>UTTypeDescription</key>
 			<string>MAZA Payment Request</string>
 			<key>UTTypeIdentifier</key>
-			<string>maza.paymentrequest</string>
+			<string>devios.paymentrequest</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.mime-type</key>
-				<string>application/maza-paymentrequest</string>
+				<string>application/devios-paymentrequest</string>
 			</dict>
 		</dict>
 		<dict>
@@ -138,11 +138,11 @@
 			<key>UTTypeDescription</key>
 			<string>Maza Payment Request</string>
 			<key>UTTypeIdentifier</key>
-			<string>maza.paymentrequest</string>
+			<string>devios.paymentrequest</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.mime-type</key>
-				<string>application/maza-paymentrequest</string>
+				<string>application/devios-paymentrequest</string>
 			</dict>
 		</dict>
 		<dict>
@@ -153,11 +153,11 @@
 			<key>UTTypeDescription</key>
 			<string>MAZA Payment</string>
 			<key>UTTypeIdentifier</key>
-			<string>maza.payment</string>
+			<string>devios.payment</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.mime-type</key>
-				<string>application/maza-payment</string>
+				<string>application/devios-payment</string>
 			</dict>
 		</dict>
 		<dict>
@@ -168,11 +168,11 @@
 			<key>UTTypeDescription</key>
 			<string>Maza Payment</string>
 			<key>UTTypeIdentifier</key>
-			<string>maza.payment</string>
+			<string>devios.payment</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.mime-type</key>
-				<string>application/maza-payment</string>
+				<string>application/devios-payment</string>
 			</dict>
 		</dict>
 		<dict>
@@ -183,11 +183,11 @@
 			<key>UTTypeDescription</key>
 			<string>MAZA Payment ACK</string>
 			<key>UTTypeIdentifier</key>
-			<string>maza.paymentack</string>
+			<string>devios.paymentack</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.mime-type</key>
-				<string>application/maza-paymentack</string>
+				<string>application/devios-paymentack</string>
 			</dict>
 		</dict>
 		<dict>
@@ -198,11 +198,11 @@
 			<key>UTTypeDescription</key>
 			<string>Maza Payment ACK</string>
 			<key>UTTypeIdentifier</key>
-			<string>maza.paymentack</string>
+			<string>devios.paymentack</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.mime-type</key>
-				<string>application/maza-paymentack</string>
+				<string>application/devios-paymentack</string>
 			</dict>
 		</dict>
 	</array>

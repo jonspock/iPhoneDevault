@@ -26,23 +26,23 @@
 #import <Foundation/Foundation.h>
 #import "NSData+Bitcoin.h"
 
-#ifdef USE_MAZA
+#ifdef USE_DVT
 
-#if MAZA_TESTNET
-#define MAZA_STANDARD_PORT          11835
+#if DVT_TESTNET
+#define DVT_STANDARD_PORT          39039
 #else
-#define MAZA_STANDARD_PORT          12835
+#define DVT_STANDARD_PORT          33039
 #endif
 
 #else
-#if MAZA_TESTNET
-#define MAZA_STANDARD_PORT 18333
+#if DVT_TESTNET
+#define DVT_STANDARD_PORT 18333
 #else
-#define MAZA_STANDARD_PORT 8333
+#define DVT_STANDARD_PORT 8333
 #endif
 #endif
 
-#define MAZA_TIMEOUT_CODE  1001
+#define DVT_TIMEOUT_CODE  1001
 
 #define SERVICES_NODE_NETWORK 1 // services value indicating a node carries full blocks, not just headers
 #define USER_AGENT            [NSString stringWithFormat:@"/breadwallet:%@/",\

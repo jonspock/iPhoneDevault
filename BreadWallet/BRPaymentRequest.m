@@ -31,7 +31,7 @@
 #define USER_AGENT [NSString stringWithFormat:@"/breadwallet:%@/",\
                     NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"]]
 
-// BIP21 maza URI object https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
+// BIP21 URI object https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
 @implementation BRPaymentRequest
 
 + (instancetype)requestWithString:(NSString *)string
@@ -83,7 +83,7 @@
     NSURL *url = [NSURL URLWithString:s];
     
     if (! url || ! url.scheme) {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"maza://%@", s]];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"devault://%@", s]];
     }
     else if (! url.host && url.resourceSpecifier) {
         url = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@", url.scheme, url.resourceSpecifier]];
@@ -91,7 +91,7 @@
     
     self.scheme = url.scheme;
     
-    if ([url.scheme isEqual:@"maza"]) {
+    if ([url.scheme isEqual:@"devault"]) {
         self.paymentAddress = url.host;
     
         //TODO: correctly handle unknown but required url arguments (by reporting the request invalid)
@@ -126,9 +126,9 @@
 
 - (NSString *)string
 {
-    if (! [self.scheme isEqual:@"maza"]) return self.r;
+    if (! [self.scheme isEqual:@"devault"]) return self.r;
 
-    NSMutableString *s = [NSMutableString stringWithString:@"maza:"];
+    NSMutableString *s = [NSMutableString stringWithString:@"devault:"];
     NSMutableArray *q = [NSMutableArray array];
     NSMutableCharacterSet *charset = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
     
@@ -136,9 +136,9 @@
     if (self.paymentAddress) [s appendString:self.paymentAddress];
     
     if (self.amount > 0) {
-#ifdef USE_MAZA
+#ifdef USE_DVT
         [q addObject:[@"amount=" stringByAppendingString:[(id)[NSDecimalNumber numberWithUnsignedLongLong:self.amount]
-                                                          decimalNumberByMultiplyingByPowerOf10:-2].stringValue]];
+                                                          decimalNumberByMultiplyingByPowerOf10:-3].stringValue]];
 #else
         [q addObject:[@"amount=" stringByAppendingString:[(id)[NSDecimalNumber numberWithUnsignedLongLong:self.amount]
                                                           decimalNumberByMultiplyingByPowerOf10:-8].stringValue]];
@@ -190,14 +190,14 @@
 
 - (BOOL)isValid
 {
-    return ([self.paymentAddress isValidMazaAddress] || (self.r && [NSURL URLWithString:self.r])) ? YES : NO;
+    return ([self.paymentAddress isValidCoinAddress] || (self.r && [NSURL URLWithString:self.r])) ? YES : NO;
 }
 
 // receiver converted to BIP70 request object
 - (BRPaymentProtocolRequest *)protocolRequest
 {
     static NSString *network = @"main";
-#if MAZA_TESTNET
+#if DVT_TESTNET
     network = @"test";
 #endif
     NSData *name = [self.label dataUsingEncoding:NSUTF8StringEncoding];
@@ -227,11 +227,11 @@ completion:(void (^)(BRPaymentProtocolRequest *req, NSError *error))completion
                                       cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:timeout] : nil;
 
     [req setValue:USER_AGENT forHTTPHeaderField:@"User-Agent"]; // BIP74 user-agent (bitpay, unpublished)
-    [req setValue:@"application/maza-paymentrequest" forHTTPHeaderField:@"Accept"];
+    [req setValue:@"application/coin-paymentrequest" forHTTPHeaderField:@"Accept"];
 //  [req addValue:@"text/uri-list" forHTTPHeaderField:@"Accept"]; // breaks some BIP72 implementations, notably bitpay's
 
     if (! req) {
-        completion(nil, [NSError errorWithDomain:@"MazaCash" code:417
+        completion(nil, [NSError errorWithDomain:@"DevaultCash" code:417
                          userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"bad payment request URL", nil)}]);
         return;
     }
@@ -246,11 +246,11 @@ completion:(void (^)(BRPaymentProtocolRequest *req, NSError *error))completion
         BRPaymentProtocolRequest *req = nil;
         NSString *network = @"main";
         
-#if MAZA_TESTNET
+#if DVT_TESTNET
         network = @"test";
 #endif
         
-        if ([response.MIMEType.lowercaseString isEqual:@"application/maza-paymentrequest"] && data.length <= 50000) {
+        if ([response.MIMEType.lowercaseString isEqual:@"application/coin-paymentrequest"] && data.length <= 50000) {
             req = [BRPaymentProtocolRequest requestWithData:data];
         }
         else if ([response.MIMEType.lowercaseString isEqual:@"text/uri-list"] && data.length <= 50000) {
@@ -265,12 +265,12 @@ completion:(void (^)(BRPaymentProtocolRequest *req, NSError *error))completion
         if (! req) {
             NSLog(@"unexpected response from %@:\n%@", u.host,
                   [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-            completion(nil, [NSError errorWithDomain:@"MazaCash" code:417 userInfo:@{NSLocalizedDescriptionKey:
+            completion(nil, [NSError errorWithDomain:@"DevaultCash" code:417 userInfo:@{NSLocalizedDescriptionKey:
                              [NSString stringWithFormat:NSLocalizedString(@"unexpected response from %@", nil), u.host]
                             }]);
         }
         else if (! [req.details.network isEqual:network]) {
-            completion(nil, [NSError errorWithDomain:@"MazaCash" code:417 userInfo:@{NSLocalizedDescriptionKey:
+            completion(nil, [NSError errorWithDomain:@"DevaultCash" code:417 userInfo:@{NSLocalizedDescriptionKey:
                              [NSString stringWithFormat:NSLocalizedString(@"requested network \"%@\" instead of \"%@\"",
                                                                           nil), req.details.network, network]}]);
         }
@@ -285,7 +285,7 @@ completion:(void (^)(BRPaymentProtocolACK *ack, NSError *error))completion
 
     if (! u) {
         if (completion) {
-            completion(nil, [NSError errorWithDomain:@"MazaCash" code:417
+            completion(nil, [NSError errorWithDomain:@"DevaultCash" code:417
                              userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"bad payment URL", nil)}]);
         }
         
@@ -296,8 +296,8 @@ completion:(void (^)(BRPaymentProtocolACK *ack, NSError *error))completion
                                 cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:timeout];
 
     [req setValue:USER_AGENT forHTTPHeaderField:@"User-Agent"];
-    [req setValue:@"application/maza-payment" forHTTPHeaderField:@"Content-Type"];
-    [req addValue:@"application/maza-paymentack" forHTTPHeaderField:@"Accept"];
+    [req setValue:@"application/coin-payment" forHTTPHeaderField:@"Content-Type"];
+    [req addValue:@"application/coin-paymentack" forHTTPHeaderField:@"Accept"];
     req.HTTPMethod = @"POST";
     req.HTTPBody = payment.data;
 
@@ -310,7 +310,7 @@ completion:(void (^)(BRPaymentProtocolACK *ack, NSError *error))completion
         
         BRPaymentProtocolACK *ack = nil;
         
-        if ([response.MIMEType.lowercaseString isEqual:@"application/maza-paymentack"] && data.length <= 50000) {
+        if ([response.MIMEType.lowercaseString isEqual:@"application/coin-paymentack"] && data.length <= 50000) {
             ack = [BRPaymentProtocolACK ackWithData:data];
         }
 
@@ -318,7 +318,7 @@ completion:(void (^)(BRPaymentProtocolACK *ack, NSError *error))completion
             NSLog(@"unexpected response from %@:\n%@", u.host,
                   [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
             if (completion) {
-                completion(nil, [NSError errorWithDomain:@"MazaCash" code:417 userInfo:@{NSLocalizedDescriptionKey:
+                completion(nil, [NSError errorWithDomain:@"DevaultCash" code:417 userInfo:@{NSLocalizedDescriptionKey:
                                  [NSString stringWithFormat:NSLocalizedString(@"unexpected response from %@", nil),
                                   u.host]}]);
             }

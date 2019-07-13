@@ -27,11 +27,11 @@
 #import "BRPeerManager.h"
 #import "BRWalletManager.h"
 #import "BREventManager.h"
-#import "maza-Swift.h"
+#import "devios-Swift.h"
 #import "BRPhoneWCSessionManager.h"
 #import <WebKit/WebKit.h>
 
-#if MAZA_TESTNET
+#if DVT_TESTNET
 #pragma message "testnet build"
 #endif
 
@@ -130,12 +130,12 @@ shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication
 annotation:(id)annotation
 {
-    if (! [url.scheme isEqual:@"maza"]) { // && ! [url.scheme isEqual:@"bread"]) {
+    if (! [url.scheme isEqual:@"devault"]) { // && ! [url.scheme isEqual:@"bread"]) {
         /*
-        [[[UIAlertView alloc] initWithTitle:@"Not a maza URL" message:url.absoluteString delegate:nil
+        [[[UIAlertView alloc] initWithTitle:@"Not a devault URL" message:url.absoluteString delegate:nil
           cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
         */
-        UIAlertController *myAlertController = [UIAlertController alertControllerWithTitle:@"Not a maza URL"
+        UIAlertController *myAlertController = [UIAlertController alertControllerWithTitle:@"Not a devault URL"
                                                                                    message: url.absoluteString
                                                                             preferredStyle:UIAlertControllerStyleAlert                   ];
         

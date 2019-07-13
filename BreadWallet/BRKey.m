@@ -186,7 +186,7 @@ size_t secp256k1_point_mul(void *r, const void *p, UInt256 i, int compressed)
     
     // mini private key format
     if ((privateKey.length == 30 || privateKey.length == 22) && [privateKey characterAtIndex:0] == 'S') {
-        if (! [privateKey isValidMazaPrivateKey]) return nil;
+        if (! [privateKey isValidCoinPrivateKey]) return nil;
         
         _seckey = [CFBridgingRelease(CFStringCreateExternalRepresentation(SecureAllocator(), (CFStringRef)privateKey,
                                                                           kCFStringEncodingUTF8, 0)) SHA256];
@@ -195,10 +195,10 @@ size_t secp256k1_point_mul(void *r, const void *p, UInt256 i, int compressed)
     }
     
     NSData *d = privateKey.base58checkToData;
-    uint8_t version = MAZA_PRIVKEY;
+    uint8_t version = DVT_PRIVKEY;
     
-#if MAZA_TESTNET
-    version = MAZA_PRIVKEY_TEST;
+#if DVT_TESTNET
+    version = DVT_PRIVKEY_TEST;
 #endif
     
     if (! d || d.length == 28) d = privateKey.base58ToData;
@@ -255,10 +255,10 @@ size_t secp256k1_point_mul(void *r, const void *p, UInt256 i, int compressed)
     if (uint256_is_zero(_seckey)) return nil;
 
     NSMutableData *d = [NSMutableData secureDataWithCapacity:sizeof(UInt256) + 2];
-    uint8_t version = MAZA_PRIVKEY;
+    uint8_t version = DVT_PRIVKEY;
 
-#if MAZA_TESTNET
-    version = MAZA_PRIVKEY_TEST;
+#if DVT_TESTNET
+    version = DVT_PRIVKEY_TEST;
 #endif
 
     [d appendBytes:&version length:1];
@@ -292,11 +292,11 @@ size_t secp256k1_point_mul(void *r, const void *p, UInt256 i, int compressed)
 - (NSString *)address
 {
     NSMutableData *d = [NSMutableData secureDataWithCapacity:160/8 + 1];
-    uint8_t version = MAZA_PUBKEY_ADDRESS;
+    uint8_t version = DVT_PUBKEY_ADDRESS;
     UInt160 hash160 = self.hash160;
 
-#if MAZA_TESTNET
-    version = MAZA_PUBKEY_ADDRESS_TEST;
+#if DVT_TESTNET
+    version = DVT_PUBKEY_ADDRESS_TEST;
 #endif
     
     [d appendBytes:&version length:1];
@@ -339,7 +339,7 @@ size_t secp256k1_point_mul(void *r, const void *p, UInt256 i, int compressed)
     return r;
 }
 
-// Pieter Wuille's compact signature encoding used for maza message signing
+// Pieter Wuille's compact signature encoding used for message signing
 // to verify a compact signature, recover a public key from the signature and verify that it matches the signer's pubkey
 - (NSData *)compactSign:(UInt256)md
 {

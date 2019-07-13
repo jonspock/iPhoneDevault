@@ -25,21 +25,21 @@
 
 #import <Foundation/Foundation.h>
 
-#ifdef USE_MAZA
-#define MAZA_PUBKEY_ADDRESS      50
-#define MAZA_SCRIPT_ADDRESS      9
-#define MAZA_PRIVKEY             224
+#ifdef USE_DVT
+#define DVT_PUBKEY_ADDRESS      50
+#define DVT_SCRIPT_ADDRESS      9
+#define DVT_PRIVKEY             224
 // TESTNET
-#define MAZA_PUBKEY_ADDRESS_TEST 88
-#define MAZA_SCRIPT_ADDRESS_TEST 188
-#define MAZA_PRIVKEY_TEST        239
+#define DVT_PUBKEY_ADDRESS_TEST 88
+#define DVT_SCRIPT_ADDRESS_TEST 188
+#define DVT_PRIVKEY_TEST        239
 #else
-#define MAZA_PUBKEY_ADDRESS      0
-#define MAZA_SCRIPT_ADDRESS      5
-#define MAZA_PRIVKEY_TEST        239
-#define MAZA_PUBKEY_ADDRESS_TEST 111
-#define MAZA_SCRIPT_ADDRESS_TEST 196
-#define MAZA_PRIVKEY             128
+#define DVT_PUBKEY_ADDRESS      0
+#define DVT_SCRIPT_ADDRESS      5
+#define DVT_PRIVKEY_TEST        239
+#define DVT_PUBKEY_ADDRESS_TEST 111
+#define DVT_SCRIPT_ADDRESS_TEST 196
+#define DVT_PRIVKEY             128
 #endif
 
 #define BIP38_NOEC_PREFIX      0x0142
@@ -62,8 +62,8 @@
 - (NSData *)hexToData;
 - (NSData *)addressToHash160;
 
-- (BOOL)isValidMazaAddress;
-- (BOOL)isValidMazaPrivateKey;
-- (BOOL)isValidMazaBIP38Key; // BIP38 encrypted keys: https://github.com/bitcoin/bips/blob/master/bip-0038.mediawiki
+- (BOOL)isValidCoinAddress;
+- (BOOL)isValidCoinPrivateKey;
+- (BOOL)isValidCoinBIP38Key; // BIP38 encrypted keys: https://github.com/bitcoin/bips/blob/master/bip-0038.mediawiki
 
 @end

@@ -29,7 +29,7 @@
 // BIP39 is method for generating a deterministic wallet seed from a mnemonic phrase
 // https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki
 
-#define BIP39_MAZA_ACTIVATION_TIME (1436918400.0 - NSTimeIntervalSince1970) //JUL 15 2015
+#define BIP39_DVT_ACTIVATION_TIME (1436918400.0 - NSTimeIntervalSince1970) //JUL 15 2015
 #define BIP39_CREATION_TIME (1436918400.0 - NSTimeIntervalSince1970) //JUL 15 2015
 
 @interface BRBIP39Mnemonic : NSObject<BRMnemonic>

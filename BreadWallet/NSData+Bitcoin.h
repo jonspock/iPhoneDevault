@@ -92,7 +92,7 @@ typedef union _UInt128 {
 #define VAR_INT32_HEADER 0xfe
 #define VAR_INT64_HEADER 0xff
 
-// maza script opcodes: https://en.bitcoin.it/wiki/Script#Constants
+// script opcodes: https://en.bitcoin.it/wiki/Script#Constants
 #define OP_PUSHDATA1   0x4c
 #define OP_PUSHDATA2   0x4d
 #define OP_PUSHDATA4   0x4e

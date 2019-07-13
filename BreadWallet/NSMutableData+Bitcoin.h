@@ -25,17 +25,17 @@
 
 #import <Foundation/Foundation.h>
 
-#ifdef USE_MAZA
-#if MAZA_TESTNET
-#define MAZA_MAGIC_NUMBER 0x01a9fe05
+#ifdef USE_DVT
+#if DVT_TESTNET
+#define DVT_MAGIC_NUMBER 0xf4f3e5f4u
 #else
-#define MAZA_MAGIC_NUMBER 0xdf03b5f8
+#define DVT_MAGIC_NUMBER 0x039c3adeu
 #endif
 #else
-#if MAZA_TESTNET
-#define MAZA_MAGIC_NUMBER 0x0709110bu
+#if DVT_TESTNET
+#define DVT_MAGIC_NUMBER 0x0709110bu
 #else
-#define MAZA_MAGIC_NUMBER 0xd9b4bef9u
+#define DVT_MAGIC_NUMBER 0xd9b4bef9u
 #endif
 #endif
 

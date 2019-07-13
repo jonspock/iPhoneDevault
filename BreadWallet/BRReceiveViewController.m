@@ -35,9 +35,9 @@
 #import "BREventManager.h"
 #import <MobileCoreServices/UTCoreTypes.h>
 
-#define QR_TIP      NSLocalizedString(@"Let others scan this QR code to get your maza address. Anyone can send "\
-                    "maza to your wallet by transferring them to your address.", nil)
-#define ADDRESS_TIP NSLocalizedString(@"This is your maza address. Tap to copy it or send it by email or sms. The "\
+#define QR_TIP      NSLocalizedString(@"Let others scan this QR code to get your address. Anyone can send "\
+                    "coins to your wallet by transferring them to your address.", nil)
+#define ADDRESS_TIP NSLocalizedString(@"This is your address. Tap to copy it or send it by email or sms. The "\
                     "address will change each time you receive funds, but old addresses always work.", nil)
 
 #define QR_IMAGE_FILE [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject\
@@ -267,7 +267,7 @@
     BOOL req = (_paymentRequest) ? YES : NO;
     UIActionSheet *actionSheet = [UIActionSheet new];
 
-    actionSheet.title = [NSString stringWithFormat:NSLocalizedString(@"Receive maza at this address: %@", nil),
+    actionSheet.title = [NSString stringWithFormat:NSLocalizedString(@"Receive at this address: %@", nil),
                self.paymentAddress];
     actionSheet.delegate = self;
     [actionSheet addButtonWithTitle:(req) ? NSLocalizedString(@"copy request to clipboard", nil) :
@@ -320,7 +320,7 @@
         if ([MFMailComposeViewController canSendMail]) {
             MFMailComposeViewController *composeController = [MFMailComposeViewController new];
             
-            composeController.subject = NSLocalizedString(@"Maza address", nil);
+            composeController.subject = NSLocalizedString(@"address", nil);
             [composeController setMessageBody:self.paymentRequest.string isHTML:NO];
             [composeController addAttachmentData:UIImagePNGRepresentation(self.qrView.image) mimeType:@"image/png"
              fileName:@"qr.png"];
@@ -365,7 +365,7 @@
             MFMessageComposeViewController *composeController = [MFMessageComposeViewController new];
 
             if ([MFMessageComposeViewController canSendSubject]) {
-                composeController.subject = NSLocalizedString(@"Maza address", nil);
+                composeController.subject = NSLocalizedString(@"address", nil);
             }
             
             composeController.body = self.paymentRequest.string;
@@ -448,14 +448,14 @@ error:(NSError *)error
         
         /*
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"amount too small", nil)
-          message:[NSString stringWithFormat:NSLocalizedString(@"maza payments can't be less than %@", nil),
+          message:[NSString stringWithFormat:NSLocalizedString(@"payments can't be less than %@", nil),
                    [manager stringForAmount:TX_MIN_OUTPUT_AMOUNT]]
           delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", nil) otherButtonTitles:nil] show];
         */
         
         UIAlertController *myAlertController = [UIAlertController
                                                 alertControllerWithTitle:NSLocalizedString(@"amount too small", nil)
-                                                message: [NSString stringWithFormat:NSLocalizedString(@"maza payments can't be less than %@", nil),[manager stringForAmount:TX_MIN_OUTPUT_AMOUNT]]
+                                                message: [NSString stringWithFormat:NSLocalizedString(@"payments can't be less than %@", nil),[manager stringForAmount:TX_MIN_OUTPUT_AMOUNT]]
                                                 preferredStyle:UIAlertControllerStyleAlert];
         
         //Step 2: Create a UIAlertAction that can be added to the alert

@@ -40,10 +40,10 @@
 #import "NSData+Bitcoin.h"
 #import "BREventManager.h"
 
-#define SCAN_TIP      NSLocalizedString(@"Scan someone else's QR code to get their maza address. "\
+#define SCAN_TIP      NSLocalizedString(@"Scan someone else's QR code to get their address. "\
                                          "You can send a payment to anyone with an address.", nil)
-#define CLIPBOARD_TIP NSLocalizedString(@"Maza addresses can also be copied to the clipboard. "\
-                                         "A maza address always starts with '1' or '3'.", nil)
+#define CLIPBOARD_TIP NSLocalizedString(@"Addresses can also be copied to the clipboard. "\
+                                         "An address always starts with '1' or '3'.", nil)
 
 #define LOCK @"\xF0\x9F\x94\x92" // unicode lock symbol U+1F512 (utf-8)
 #define REDX @"\xE2\x9D\x8C"     // unicode cross mark U+274C, red x emoji (utf-8)
@@ -142,7 +142,7 @@ static NSString *sanitizeString(NSString *s)
     
     //TODO: XXX custom url splash image per: "Providing Launch Images for Custom URL Schemes."
     BRWalletManager *manager = [BRWalletManager sharedInstance];
-    if ([url.scheme isEqual:@"maza"]) { // x-callback-url handling: http://x-callback-url.com/specifications/
+    if ([url.scheme isEqual:@"devault"]) { // x-callback-url handling: http://x-callback-url.com/specifications/
         NSString *xsource = nil, *xsuccess = nil, *xerror = nil, *uri = nil;
         NSURL *callback = nil;
 
@@ -195,15 +195,15 @@ static NSString *sanitizeString(NSString *s)
                                              ([NSURL URLWithString:xsuccess].query.length > 0) ? @"&" : @"?",
                                              manager.wallet.receiveAddress]];
         }
-        else if (([url.host isEqual:@"maza-uri"] || [url.path isEqual:@"/maza-uri"]) && uri &&
-                 [[NSURL URLWithString:uri].scheme isEqual:@"maza"]) {
+        else if (([url.host isEqual:@"devault-uri"] || [url.path isEqual:@"/devault-uri"]) && uri &&
+                 [[NSURL URLWithString:uri].scheme isEqual:@"devault"]) {
             if (xsuccess) self.callback = [NSURL URLWithString:xsuccess];
             [self handleURL:[NSURL URLWithString:uri]];
         }
         
         if (callback) [[UIApplication sharedApplication] openURL:callback];
     }
-    else if ([url.scheme isEqual:@"maza"]) {
+    else if ([url.scheme isEqual:@"devault"]) {
         [self confirmRequest:[BRPaymentRequest requestWithURL:url]];
     }
     else {
@@ -233,7 +233,7 @@ static NSString *sanitizeString(NSString *s)
                 
                 if (error) {
                     [[[UIAlertView alloc]
-                      initWithTitle:NSLocalizedString(@"couldn't transmit payment to maza network", nil)
+                      initWithTitle:NSLocalizedString(@"couldn't transmit payment to network", nil)
                       message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", nil)
                       otherButtonTitles:nil] show];
                 }
@@ -293,11 +293,11 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
 - (void)confirmRequest:(BRPaymentRequest *)request
 {
     if (! request.isValid) {
-        if ([request.paymentAddress isValidMazaPrivateKey] || [request.paymentAddress isValidMazaBIP38Key]) {
+        if ([request.paymentAddress isValidCoinPrivateKey] || [request.paymentAddress isValidCoinBIP38Key]) {
             [self confirmSweep:request.paymentAddress];
         }
         else {
-            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"not a valid maza address", nil)
+            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"not a valid address", nil)
               message:request.paymentAddress delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", nil)
               otherButtonTitles:nil] show];
             [self cancel:nil];
@@ -310,7 +310,7 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
             dispatch_async(dispatch_get_main_queue(), ^{
                 [(id)self.parentViewController.parentViewController stopActivityWithSuccess:(! error)];
 
-                if (error && ! [request.paymentAddress isValidMazaAddress]) {
+                if (error && ! [request.paymentAddress isValidCoinAddress]) {
                     [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"couldn't make payment", nil)
                       message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", nil)
                       otherButtonTitles:nil] show];
@@ -362,7 +362,7 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
         self.request = protoReq;
         self.okAddress = address;
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", nil)
-          message:NSLocalizedString(@"\nADDRESS ALREADY USED\n\nmaza addresses are intended for single use only\n\n"
+          message:NSLocalizedString(@"\nADDRESS ALREADY USED\n\n addresses are intended for single use only\n\n"
                                     "re-use reduces privacy for both you and the recipient and can result in loss if "
                                     "the recipient doesn't directly control the address", nil)
           delegate:self cancelButtonTitle:nil
@@ -404,7 +404,7 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
     }
     else if (amount < TX_MIN_OUTPUT_AMOUNT) {
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"couldn't make payment", nil)
-          message:[NSString stringWithFormat:NSLocalizedString(@"maza payments can't be less than %@", nil),
+          message:[NSString stringWithFormat:NSLocalizedString(@" payments can't be less than %@", nil),
                    [manager stringForAmount:TX_MIN_OUTPUT_AMOUNT]] delegate:nil
           cancelButtonTitle:NSLocalizedString(@"ok", nil) otherButtonTitles:nil] show];
         [self cancel:nil];
@@ -412,7 +412,7 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
     }
     else if (outputTooSmall) {
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"couldn't make payment", nil)
-          message:[NSString stringWithFormat:NSLocalizedString(@"maza transaction outputs can't be less than %@",
+          message:[NSString stringWithFormat:NSLocalizedString(@" transaction outputs can't be less than %@",
                                                                nil), [manager stringForAmount:TX_MIN_OUTPUT_AMOUNT]]
           delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", nil) otherButtonTitles:nil] show];
         [self cancel:nil];
@@ -478,7 +478,7 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
 
                 if (amount > 0 && amount < self.amount) {
                     [[[UIAlertView alloc]
-                      initWithTitle:NSLocalizedString(@"insufficient funds for maza network fee", nil)
+                      initWithTitle:NSLocalizedString(@"insufficient funds for network fee", nil)
                       message:[NSString stringWithFormat:NSLocalizedString(@"reduce payment amount by\n%@ (%@)?", nil),
                                [manager stringForAmount:self.amount - amount],
                                [manager localCurrencyStringForAmount:self.amount - amount]] delegate:self
@@ -490,7 +490,7 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
                 }
                 else {
                     [[[UIAlertView alloc]
-                      initWithTitle:NSLocalizedString(@"insufficient funds for maza network fee", nil) message:nil
+                      initWithTitle:NSLocalizedString(@"insufficient funds for network fee", nil) message:nil
                       delegate:self cancelButtonTitle:NSLocalizedString(@"ok", nil) otherButtonTitles:nil] show];
                 }
             }
@@ -507,7 +507,7 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
 
     if (! [manager.wallet signTransaction:tx withPrompt:prompt]) {
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"couldn't make payment", nil)
-          message:NSLocalizedString(@"error signing maza transaction", nil) delegate:nil
+          message:NSLocalizedString(@"error signing transaction", nil) delegate:nil
           cancelButtonTitle:NSLocalizedString(@"ok", nil) otherButtonTitles:nil] show];
     }
 
@@ -629,7 +629,7 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
 
 - (void)confirmSweep:(NSString *)privKey
 {
-    if (! [privKey isValidMazaPrivateKey] && ! [privKey isValidMazaBIP38Key]) return;
+    if (! [privKey isValidCoinPrivateKey] && ! [privKey isValidCoinBIP38Key]) return;
 
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     BRBubbleView *statusView = [BRBubbleView viewWithText:NSLocalizedString(@"checking private key balance...", nil)
@@ -657,7 +657,7 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
                 self.sweepTx = tx;
 
                 NSString *alertFmt = NSLocalizedString(@"Send %@ (%@) from this private key into your wallet? "
-                                                       "The maza network will receive a fee of %@ (%@).", nil);
+                                                       "The network will receive a fee of %@ (%@).", nil);
                 NSString *alertMsg = [NSString stringWithFormat:alertFmt, [manager stringForAmount:amount],
                                       [manager localCurrencyStringForAmount:amount], [manager stringForAmount:fee],
                                       [manager localCurrencyStringForAmount:fee]];
@@ -673,7 +673,7 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
 
 - (void)showBalance:(NSString *)address
 {
-    if (! [address isValidMazaAddress]) return;
+    if (! [address isValidCoinAddress]) return;
 
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     BRBubbleView *statusView = [BRBubbleView viewWithText:NSLocalizedString(@"checking address balance...", nil)
@@ -786,11 +786,11 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
         for (NSString *s in set) {
             BRPaymentRequest *req = [BRPaymentRequest requestWithString:s];
             
-            if ([req.paymentAddress isValidMazaAddress]) {
+            if ([req.paymentAddress isValidCoinAddress]) {
                 text = (req.label.length > 0) ? sanitizeString(req.label) : req.paymentAddress;
                 break;
             }
-            else if ([s hasPrefix:@"maza:"]) {
+            else if ([s hasPrefix:@"devault:"]) {
                 text = sanitizeString(s);
                 break;
             }
@@ -822,8 +822,8 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
         // if the clipboard contains a known txHash, we know it's not a hex encoded private key
         if (data.length == sizeof(UInt256) && [manager.wallet transactionForHash:*(UInt256 *)data.bytes]) continue;
         
-        if ([req.paymentAddress isValidMazaAddress] || [str isValidMazaPrivateKey] ||
-            [str isValidMazaBIP38Key] || (req.r.length > 0 && [req.scheme isEqual:@"maza"])) {
+        if ([req.paymentAddress isValidCoinAddress] || [str isValidCoinPrivateKey] ||
+            [str isValidCoinBIP38Key] || (req.r.length > 0 && [req.scheme isEqual:@"devault"])) {
             [self performSelector:@selector(confirmRequest:) withObject:req afterDelay:0.1];// delayed to show highlight
             return;
         }
@@ -833,7 +833,7 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
                     if (error) { // don't try any more BIP73 urls
                         [self payFirstFromArray:[array objectsAtIndexes:[array
                         indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-                            return (idx >= i && ([obj hasPrefix:@"maza:"] || ! [NSURL URLWithString:obj]));
+                            return (idx >= i && ([obj hasPrefix:@"devault:"] || ! [NSURL URLWithString:obj]));
                         }]]];
                     }
                     else [self confirmProtocolRequest:req];
@@ -845,12 +845,12 @@ memo:(NSString *)memo isSecure:(BOOL)isSecure
     }
     /*
     [[[UIAlertView alloc] initWithTitle:@""
-      message:NSLocalizedString(@"clipboard doesn't contain a valid maza address", nil) delegate:nil
+      message:NSLocalizedString(@"clipboard doesn't contain a valid address", nil) delegate:nil
       cancelButtonTitle:NSLocalizedString(@"ok", nil) otherButtonTitles:nil] show];
     */
     UIAlertController *myAlertController = [UIAlertController
                                             alertControllerWithTitle:@"Invalid"
-                                            message:NSLocalizedString(@"clipboard doesn't contain a valid maza address",nil)                                                                     preferredStyle:UIAlertControllerStyleAlert];
+                                            message:NSLocalizedString(@"clipboard doesn't contain a valid address",nil)                                                                     preferredStyle:UIAlertControllerStyleAlert];
     
     //Step 2: Create a UIAlertAction that can be added to the alert
     UIAlertAction* ok = [UIAlertAction
@@ -1024,15 +1024,15 @@ fromConnection:(AVCaptureConnection *)connection
                           [NSCharacterSet whitespaceAndNewlineCharacterSet]];
         BRPaymentRequest *request = [BRPaymentRequest requestWithString:addr];
 
-        if (request.isValid || [addr isValidMazaBIP38Key] ||
-            (request.r.length > 0 && [request.scheme isEqual:@"maza"])) {
+        if (request.isValid || [addr isValidCoinBIP38Key] ||
+            (request.r.length > 0 && [request.scheme isEqual:@"devault"])) {
             [UIPasteboard generalPasteboard].string = addr;
             NSLog(@"Saving address from QR Scan to clipboard and updating clipboard text with addr = %@", [UIPasteboard generalPasteboard].string);
             [self updateClipboardText];
         }
         
-        if (request.isValid || [addr isValidMazaPrivateKey] || [addr isValidMazaBIP38Key] ||
-            (request.r.length > 0 && [request.scheme isEqual:@"maza"])) {
+        if (request.isValid || [addr isValidCoinPrivateKey] || [addr isValidCoinBIP38Key] ||
+            (request.r.length > 0 && [request.scheme isEqual:@"devault"])) {
             self.scanController.cameraGuide.image = [UIImage imageNamed:@"cameraguide-green"];
             [self.scanController stop];
             [BREventManager saveEvent:@"send:valid_qr_scan"];
@@ -1123,13 +1123,13 @@ fromConnection:(AVCaptureConnection *)connection
                     else {
                         self.scanController.cameraGuide.image = [UIImage imageNamed:@"cameraguide-red"];
                         
-                        if (([request.scheme isEqual:@"maza"] && request.paymentAddress.length > 1) ||
+                        if (([request.scheme isEqual:@"devault"] && request.paymentAddress.length > 1) ||
                             [request.paymentAddress hasPrefix:@"1"] || [request.paymentAddress hasPrefix:@"3"]) {
                             self.scanController.message.text = [NSString stringWithFormat:@"%@:\n%@",
-                                                                NSLocalizedString(@"not a valid maza address", nil),
+                                                                NSLocalizedString(@"not a valid address", nil),
                                                                 request.paymentAddress];
                         }
-                        else self.scanController.message.text = NSLocalizedString(@"not a maza QR code", nil);
+                        else self.scanController.message.text = NSLocalizedString(@"not a valid QR code", nil);
                         
                         [self performSelector:@selector(resetQRGuide) withObject:nil afterDelay:0.35];
                         [BREventManager saveEvent:@"send:unsuccessful_bip73"];

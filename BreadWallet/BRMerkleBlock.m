@@ -356,6 +356,30 @@ UInt256 divide (UInt256 a,UInt256 b)
     return r;
 }
 
+UInt256 divide_by (UInt256 a, uint64_t b)
+{
+    UInt256 div = ((UInt256) { .u64 = { b, 0, 0, 0 } });   // make a copy, so we can shift.
+    UInt256 num = a;     // make a copy, so we can subtract.
+    UInt256 r = UINT256_ZERO;                  // the quotient.
+    int num_bits = bits(num);
+    int div_bits = bits(div);
+    assert (div_bits != 0);
+    if (div_bits > num_bits) // the result is certainly 0.
+        return r;
+    int shift = num_bits - div_bits;
+    div = shiftLeft(div, shift); // shift so that div and nun align.
+    while (shift >= 0) {
+        if (uint256_supeq(num,div)) {
+            num = subtract(num,div);
+            r.u32[shift / 32] |= (1 << (shift & 31)); // set a bit of the result.
+        }
+        div = shiftRight(div, 1); // shift back.
+        shift--;
+    }
+    // num now contains the remainder of the division.
+    return r;
+}
+
 UInt256 multiplyThis32 (UInt256 a,uint32_t b)
 {
     uint64_t carry = 0;
@@ -367,91 +391,60 @@ UInt256 multiplyThis32 (UInt256 a,uint32_t b)
     return a;
 }
 
-- (BOOL)verifyDifficultyWithPreviousBlocksMaza:(NSMutableDictionary *)previousBlocks
-                             andTransitionTime:(uint32_t)time
-{
-    // Since we are past the Checkpoint where Transition to DGW happened, there is no need to use
-    // other difficulty check
-    uint32_t darkGravityWaveTarget = [self darkGravityWaveTargetWithPreviousBlocks:previousBlocks];
-    int32_t diff = self.target - darkGravityWaveTarget;
-    if (diff > 2) {
-        NSLog(@" diff = %d",diff);
-    }
-
-    return (abs(diff) < 2); //the core client has is less precise with a rounding error that can sometimes cause a problem. We are very rarely 1 off
-}
-
--(int32_t)darkGravityWaveTargetWithPreviousBlocks:(NSMutableDictionary *)previousBlocks {
-    /* current difficulty formula, darkcoin - based on DarkGravity v3, original work done by evan duffield, modified for iOS */
-    BRMerkleBlock *previousBlock = previousBlocks[uint256_obj(self.prevBlock)];
+-(bool)verifyLWMAFromPreviousBlocks:(NSMutableDictionary *)previousBlocks andTransitionTime:(uint32_t)time {
     
     int32_t nActualTimespan = 0;
     int64_t lastBlockTime = 0;
     uint32_t blockCount = 0;
-    UInt256 sumTargets = UINT256_ZERO;
+    UInt256 sum_target = UINT256_ZERO;
+    BRMerkleBlock *previousBlock = previousBlocks[uint256_obj(self.prevBlock)];
     
-    if (uint256_is_zero(_prevBlock) || previousBlock.height == 0 || previousBlock.height < DGW_PAST_BLOCKS_MIN) {
+    if (uint256_is_zero(_prevBlock) || previousBlock.height == 0 || previousBlock.height < LWMA_BLOCKS) {
         // This is the first block or the height is < PastBlocksMin
         // Return minimal required work. (1e0ffff0)
         return MAX_PROOF_OF_WORK;
     }
+
+    const int64_t T = BLOCK_INTERVAL_SECS; // 2 minute block times
+    const int N = LWMA_BLOCKS;
+    const int k = (N+1) * T / 2;  // ignore adjust 0.9989^(500/N) from python code
+    const int dnorm = 10;
+
+    int t = 0, j = 0;
     
     BRMerkleBlock *currentBlock = previousBlock;
     // loop over the past n blocks, where n == PastBlocksMax
-    for (blockCount = 1; currentBlock && currentBlock.height > 0 && blockCount<=DGW_PAST_BLOCKS_MAX; blockCount++) {
-        // Calculate average difficulty based on the blocks we iterate over in this for loop
-        if(blockCount <= DGW_PAST_BLOCKS_MIN) {
-            UInt256 currentTarget = setCompact(currentBlock.target);
-            if (blockCount == 1) {
-                sumTargets = add(currentTarget,currentTarget);
-            } else {
-                sumTargets = add(sumTargets,currentTarget);
-            }
-        }
-        
-        // If this is the second iteration (LastBlockTime was set)
-        if(lastBlockTime > 0){
-            // Calculate time difference between previous block and current block
-            int64_t currentBlockTime = currentBlock.timestamp;
-            int64_t diff = ((lastBlockTime) - (currentBlockTime));
-            // Increment the actual timespan
-            nActualTimespan += diff;
-        }
-        // Set lastBlockTime to the block time for the block in current iteration
-        lastBlockTime = currentBlock.timestamp;
-        
-        if (previousBlock == NULL) { assert(currentBlock); break; }
-        currentBlock = previousBlocks[uint256_obj(currentBlock.prevBlock)];
+    for (blockCount = 1; currentBlock && currentBlock.height > 0 && blockCount<=N; blockCount++) {
+      
+        int64_t currentBlockTime = currentBlock.timestamp;
+        int64_t previousBlockTime = previousBlock.timestamp;
+        int64_t solvetime = currentBlockTime - previousBlockTime;
+
+        if (solvetime > 6*T) solvetime = 6*T;
+        j++;
+
+        t += solvetime * j;  // Weighted solvetime sum.
+
+        // Target sum divided by a factor, (k N^2).
+        // The factor is a part of the final equation. However we divide sum_target here to avoid
+        // potential overflow.
+        UInt256 target = setCompact(currentBlock.target);
+        sum_target = add(sum_target,divide_by(target, (k * N * N)));
     }
-    UInt256 blockCount256 = ((UInt256) { .u64 = { blockCount, 0, 0, 0 } });
-    // darkTarget is the difficulty
-    UInt256 darkTarget = divide(sumTargets,blockCount256);
-    /*
-    NSLog(@"For height %d compact darktarget = %x",self.height,getCompact(darkTarget));
-    */
-    
-    // nTargetTimespan is the time that the CountBlocks should have taken to be generated.
-    uint32_t nTargetTimespan = (blockCount - 1)* (BLOCK_INTERVAL_SECS);
-    
-    // Limit the re-adjustment to 3x or 0.33x
-    // We don't want to increase/decrease diff too much.
-    if (nActualTimespan < nTargetTimespan/3.0f)
-        nActualTimespan = nTargetTimespan/3.0f;
-    if (nActualTimespan > nTargetTimespan*3.0f)
-        nActualTimespan = nTargetTimespan*3.0f;
-    
-    // Calculate the new difficulty based on actual and target timespan.
-    darkTarget = divide(multiplyThis32(darkTarget,nActualTimespan),((UInt256) { .u64 = { nTargetTimespan, 0, 0, 0 } }));
-    
-    int32_t compact = getCompact(darkTarget);
-    
-    // If calculated difficulty is lower than the minimal diff, set the new difficulty to be the minimal diff.
-    if (compact > MAX_PROOF_OF_WORK){
-        compact = MAX_PROOF_OF_WORK;
+
+    // Keep t reasonable in case strange solvetimes occurred.
+    if (t < N * k / dnorm) {
+        t = N * k / dnorm;
     }
-    
-    // Return the new diff.
-    return compact;
+
+    UInt256 next_target = multiplyThis32(sum_target, t);
+    int32_t compact = getCompact(next_target);
+    if (compact > MAX_PROOF_OF_WORK) {
+      compact = MAX_PROOF_OF_WORK;
+    }
+
+    int32_t diff = self.target - compact;
+    return (abs(diff) < 1);
 }
 
 
@@ -470,7 +463,7 @@ UInt256 multiplyThis32 (UInt256 a,uint32_t b)
     if (! uint256_eq(_prevBlock, previous.blockHash) || _height != previous.height + 1) return NO;
     if ((_height % BLOCK_DIFFICULTY_INTERVAL) == 0 && time == 0) return NO;
 
-#if MAZA_TESTNET
+#if DVT_TESTNET
     //TODO: implement testnet difficulty rule check
     return YES; // don't worry about difficulty on testnet for now
 #endif

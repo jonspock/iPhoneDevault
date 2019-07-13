@@ -189,7 +189,7 @@
                 
                 for (NSString *s in [textView.text componentsSeparatedByCharactersInSet:[NSCharacterSet
                                      alphanumericCharacterSet].invertedSet]) {
-                    if (! [s isValidMazaAddress]) continue;
+                    if (! [s isValidCoinAddress]) continue;
                     
                     BRAddressEntity *e = [BRAddressEntity managedObject];
                     

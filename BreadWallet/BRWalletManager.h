@@ -33,7 +33,7 @@
 
 #define DUFFS           100000000
 #define MAX_MONEY       (21000000LL*DUFFS)
-#define MAZA         @"M"     // capital D with stroke (utf-8)
+#define DVT          @"D"     // capital D with stroke (utf-8)
 #define DITS         @"\xC4\x91"     // lowercase d with stroke (utf-8)
 #define NARROW_NBSP  @"\xE2\x80\xAF" // narrow no-break space (utf-8)
 #define LDQUOTE      @"\xE2\x80\x9C" // left double quote (utf-8)
@@ -62,11 +62,10 @@
 @property (nonatomic, readonly, getter=isTouchIdEnabled) BOOL touchIdEnabled; // true if touch id is enabled
 @property (nonatomic, readonly, getter=isPasscodeEnabled) BOOL passcodeEnabled; // true if device passcode is enabled
 @property (nonatomic, assign) BOOL didAuthenticate; // true if the user authenticated after this was last set to false
-@property (nonatomic, readonly) NSNumberFormatter * _Nullable format; // maza currency formatter
+@property (nonatomic, readonly) NSNumberFormatter * _Nullable format; // coin currency formatter
 @property (nonatomic, readonly) NSNumberFormatter * _Nullable localFormat; // local currency formatter
 @property (nonatomic, copy) NSString * _Nullable localCurrencyCode; // local currency ISO code
-@property (nonatomic, readonly) double localCurrencyPrice; // exchange rate in local currency units per maza
-//@property (nonatomic, readonly) double mazaPerBitcoin;
+@property (nonatomic, readonly) double localCurrencyPrice; // exchange rate in local currency units per coin
 @property (nonatomic, readonly) NSArray * _Nullable currencyCodes; // list of supported local currency codes
 @property (nonatomic, readonly) NSArray * _Nullable currencyNames; // names for local currency codes
 
@@ -92,7 +91,7 @@ completion:(void (^ _Nonnull)(BRTransaction * _Nonnull tx, uint64_t fee, NSError
 - (NSString * _Nonnull)stringForAmount:(int64_t)amount;
 - (int64_t)amountForLocalCurrencyString:(NSString * _Nonnull)string;
 - (NSString * _Nonnull)localCurrencyStringForAmount:(int64_t)amount;
-- (void)getMazaPrice;
+- (void)getCoinPrice;
 
 
 @end

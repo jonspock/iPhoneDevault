@@ -26,7 +26,7 @@
 import Foundation
 
 
-let BreadDefaultService = "org.mazacoin.maza"
+let BreadDefaultService = "org.jonspock.devios"
 
 enum BRKeychainError: String, Error {
     // this is borrowed from the "Locksmith" library: https://github.com/matthewpalmer/Locksmith

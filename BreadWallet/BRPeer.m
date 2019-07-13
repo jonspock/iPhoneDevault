@@ -42,8 +42,8 @@
 #define MAX_MSG_LENGTH     0x02000000u
 #define MAX_GETDATA_HASHES 50000
 #define ENABLED_SERVICES   0     // we don't provide full blocks to remote nodes
-#define PROTOCOL_VERSION   70002
-#define MIN_PROTO_VERSION  70002 // peers earlier than this
+#define PROTOCOL_VERSION   70019
+#define MIN_PROTO_VERSION  70019 // peers earlier than this
 #define LOCAL_HOST         0x7f000001u
 #define ZERO_HASH          [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH]
 #define CONNECT_TIMEOUT    3.0
@@ -90,7 +90,7 @@ typedef enum : uint32_t {
     if (! (self = [super init])) return nil;
 
     _address = address;
-    _port = (port == 0) ? MAZA_STANDARD_PORT : port;
+    _port = (port == 0) ? DVT_STANDARD_PORT : port;
     return self;
 }
 
@@ -190,7 +190,7 @@ services:(uint64_t)services
         
         // after the reachablity check, the radios should be warmed up and we can set a short socket connect timeout
         [self performSelector:@selector(disconnectWithError:)
-         withObject:[NSError errorWithDomain:@"MazaCash" code:MAZA_TIMEOUT_CODE
+         withObject:[NSError errorWithDomain:@"MazaCash" code:DVT_TIMEOUT_CODE
                      userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"connect timeout", nil)}]
          afterDelay:CONNECT_TIMEOUT];
         
@@ -232,12 +232,9 @@ services:(uint64_t)services
             ((void (^)(BOOL))self.pongHandlers[0])(NO);
             [self.pongHandlers removeObjectAtIndex:0];
         }
+        
+        [self.delegate peer:self disconnectedWithError:error];
     });
-  
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [self.delegate peer:self disconnectedWithError:error];
-    });
-  
 }
 
 - (void)error:(NSString *)message, ... NS_FORMAT_FUNCTION(1,2)
@@ -303,7 +300,7 @@ services:(uint64_t)services
     [msg appendUInt64:self.services]; // services of remote peer
     [msg appendBytes:&_address length:sizeof(_address)]; // IPv6 address of remote peer
     [msg appendBytes:&port length:sizeof(port)]; // port of remote peer
-    [msg appendNetAddress:LOCAL_HOST port:MAZA_STANDARD_PORT services:ENABLED_SERVICES]; // net address of local peer
+    [msg appendNetAddress:LOCAL_HOST port:DVT_STANDARD_PORT services:ENABLED_SERVICES]; // net address of local peer
     self.localNonce = ((uint64_t)arc4random() << 32) | (uint64_t)arc4random(); // random nonce
     [msg appendUInt64:self.localNonce];
     [msg appendString:USER_AGENT]; // user agent
@@ -1028,7 +1025,7 @@ services:(uint64_t)services
                 self.startTime = [NSDate timeIntervalSinceReferenceDate]; // don't count connect time in ping time
                 [NSObject cancelPreviousPerformRequestsWithTarget:self]; // cancel pending socket connect timeout
                 [self performSelector:@selector(disconnectWithError:)
-                 withObject:[NSError errorWithDomain:@"MazaCash" code:MAZA_TIMEOUT_CODE
+                 withObject:[NSError errorWithDomain:@"MazaCash" code:DVT_TIMEOUT_CODE
                              userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"connect timeout", nil)}]
                              afterDelay:CONNECT_TIMEOUT];
             }
@@ -1069,7 +1066,7 @@ services:(uint64_t)services
                         
                         // consume one byte at a time, up to the magic number that starts a new message header
                         while (self.msgHeader.length >= sizeof(uint32_t) &&
-                               [self.msgHeader UInt32AtOffset:0] != MAZA_MAGIC_NUMBER) {
+                               [self.msgHeader UInt32AtOffset:0] != DVT_MAGIC_NUMBER) {
 #if DEBUG
                             printf("%c", *(const char *)self.msgHeader.bytes);
 #endif

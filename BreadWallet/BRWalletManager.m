@@ -39,17 +39,17 @@
 #import "NSManagedObject+Sugar.h"
 #import "Reachability.h"
 #import <LocalAuthentication/LocalAuthentication.h>
-#import "maza-Swift.h"
+#import "devios-Swift.h"
 
 #define CIRCLE  @"\xE2\x97\x8C" // dotted circle (utf-8)
 #define DOT     @"\xE2\x97\x8F" // black circle (utf-8)
 
 
 #define SEED_ENTROPY_LENGTH    (128/8)
-#define SEC_ATTR_SERVICE       @"org.mazacoin.maza"
+#define SEC_ATTR_SERVICE       @"org.jonspock.devios"
 #define DEFAULT_CURRENCY_CODE  @"USD"
 #define DEFAULT_SPENT_LIMIT    SATOSHIS
-#ifdef USE_MAZA
+#ifdef USE_DVT
 #define DEFAULT_FEE_PER_KB (4096*1000/225)
 #define MAX_FEE_PER_KB     (10100*1000/225) // slightly higher than a 100bit fee on a typical 225byte transaction
 #else
@@ -65,7 +65,7 @@
 #define PIN_UNLOCK_TIME_KEY     @"PIN_UNLOCK_TIME"
 #define SECURE_TIME_KEY         @"SECURE_TIME"
 #define FEE_PER_KB_KEY          @"FEE_PER_KB"
-#define MAZA_USD_KEY            @"MAZA_USD_KEY"
+#define DVT_USD_KEY            @"DVT_USD_KEY"
 
 #define MNEMONIC_KEY        @"mnemonic"
 #define CREATION_TIME_KEY   @"creationtime"
@@ -91,20 +91,21 @@
 #define UNSPENT_URL @"http://%@insight.maza.siampm.com/api/addr/%@/utxo"
 #define BITCOIN_TICKER_URL  @"https://bitpay.com/rates"
 #define CRYPTSY_TICKER_URL  @"http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=155"
-#define POLONIEX_TICKER_URL  @"https://poloniex.com/public?command=returnOrderBook&currencyPair=BTC_MAZA&depth=1"
+#define POLONIEX_TICKER_URL  @"https://poloniex.com/public?command=returnOrderBook&currencyPair=BTC_DVT&depth=1"
 #define BITFINEX_TICKER_URL  @"https://api.bitfinex.com/v1/pubticker/drkbtc"
 
-#define CRYPTSY_MAZA_BTC_PRICE_KEY  @"CRYPTSY_MAZA_BTC_PRICE"
-#define CRYPTSY_MAZA_BTC_UPDATE_TIME_KEY  @"CRYPTSY_MAZA_BTC_UPDATE_TIME"
-#define POLONIEX_MAZA_BTC_PRICE_KEY  @"POLONIEX_MAZA_BTC_PRICE"
-#define POLONIEX_MAZA_BTC_UPDATE_TIME_KEY  @"POLONIEX_MAZA_BTC_UPDATE_TIME"
+#define CRYPTSY_DVT_BTC_PRICE_KEY  @"CRYPTSY_DVT_BTC_PRICE"
+#define CRYPTSY_DVT_BTC_UPDATE_TIME_KEY  @"CRYPTSY_DVT_BTC_UPDATE_TIME"
+#define POLONIEX_DVT_BTC_PRICE_KEY  @"POLONIEX_DVT_BTC_PRICE"
+#define POLONIEX_DVT_BTC_UPDATE_TIME_KEY  @"POLONIEX_DVT_BTC_UPDATE_TIME"
 #define SPEND_LIMIT_AMOUNT_KEY      @"SPEND_LIMIT_AMOUNT"
 #define SECURE_TIME_KEY             @"SECURE_TIME"
 #define FEE_PER_KB_KEY              @"FEE_PER_KB"
 
 #endif
-//#define MAZA_PRICE_URL @"https://coinmarketcap-nexuist.rhcloud.com/api/dash/price"
-#define MAZA_PRICE_URL @"https://api.coingecko.com/api/v3/simple/price?ids=maza&vs_currencies=usd"
+//#define DVT_PRICE_URL @"https://coinmarketcap-nexuist.rhcloud.com/api/dvt/price"
+#define DVT_PRICE_URL @"https://min-api.cryptocompare.com/data/price?fsym=DVT&tsyms=USD"
+
 
 static BOOL setKeychainData(NSData *data, NSString *key, BOOL authenticated)
 {
@@ -213,8 +214,8 @@ static NSString *getKeychainString(NSString *key, NSError **error)
 @property (nonatomic, strong) Reachability *reachability;
 @property (nonatomic, strong) NSArray *currencyPrices;
 @property (nonatomic, strong) NSNumber *localPrice;
-@property (nonatomic, strong) NSNumber *mazaUSDPrice;
-@property (nonatomic) double mazaPerBTC;
+@property (nonatomic, strong) NSNumber *coinUSDPrice;
+@property (nonatomic) double coinPerBTC;
 
 @property (nonatomic, assign) BOOL sweepFee, didPresent;
 @property (nonatomic, strong) NSString *sweepKey;
@@ -257,9 +258,9 @@ static NSString *getKeychainString(NSString *key, NSError **error)
     self.format.negativeFormat = [self.format.positiveFormat
                                   stringByReplacingCharactersInRange:[self.format.positiveFormat rangeOfString:@"#"]
                                   withString:@"-#"];
-#ifdef USE_MAZA
+#ifdef USE_DVT
     self.format.currencyCode = @"XDC";
-    self.format.currencySymbol = MAZA NARROW_NBSP;
+    self.format.currencySymbol = DVT NARROW_NBSP;
     self.format.maximumFractionDigits = 8;
     self.format.minimumFractionDigits = 0; // iOS 8 bug, minimumFractionDigits now has to be set after currencySymbol
 #else
@@ -490,8 +491,8 @@ static NSString *getKeychainString(NSString *key, NSError **error)
     NSData *d = getKeychainData(CREATION_TIME_KEY, nil);
 
     if (d.length == sizeof(NSTimeInterval)) return *(const NSTimeInterval *)d.bytes;
-#ifdef USE_MAZA
-    return (self.watchOnly) ? 0 : BIP39_MAZA_ACTIVATION_TIME;
+#ifdef USE_DVT
+    return (self.watchOnly) ? 0 : BIP39_DVT_ACTIVATION_TIME;
 #else
     return (self.watchOnly) ? 0 : BIP39_CREATION_TIME;
 #endif
@@ -957,7 +958,7 @@ static NSString *getKeychainString(NSString *key, NSError **error)
 {
     if (self.reachability.currentReachabilityStatus == NotReachable) return;
     
-    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:MAZA_PRICE_URL]
+    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:DVT_PRICE_URL]
                                          cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
     
     [[[NSURLSession sharedSession] dataTaskWithRequest:req
@@ -988,7 +989,7 @@ static NSString *getKeychainString(NSString *key, NSError **error)
                                          [defs setObject:price forKey:CURRENCY_PRICES_KEY];
                                          [defs synchronize];
                                          
-                                         [self refreshBitcoinMazaPrice];
+                                         [self refreshBitcoinCoinPrice];
                                           NSLog(@"exchange rate updated to %@/%@", [self localCurrencyStringForAmount:SATOSHIS],
                                                [self stringForAmount:SATOSHIS]);
                                          
@@ -1000,10 +1001,10 @@ static NSString *getKeychainString(NSString *key, NSError **error)
 
 }
 
-- (void)getMazaPrice
+- (void)getCoinPrice
 {
     if (self.reachability.currentReachabilityStatus == NotReachable) return;
-    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:MAZA_PRICE_URL]
+    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:DVT_PRICE_URL]
                                          cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
     
     
@@ -1014,12 +1015,11 @@ static NSString *getKeychainString(NSString *key, NSError **error)
                                              return;
                                          }
                                          NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                                         id maza = json[@"maza"];            
-                                         double usd = [[maza objectForKey:@"usd"] doubleValue];
+                                         double usd = [[json objectForKey:@"USD"] doubleValue];
                                          NSNumber *price = [NSNumber numberWithDouble:usd];
-                                         self.mazaUSDPrice = price;
+                                         self.coinUSDPrice = price;
                                          NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
-                                         [defs setObject:price forKey:MAZA_USD_KEY];
+                                         [defs setObject:price forKey:DVT_USD_KEY];
                                          [defs synchronize];
                                          [self loadTicker2:TICKER_URL withJSONKey:@"body" failoverHandler:^{
                                              [self loadTicker2:TICKER_FAILOVER_URL withJSONKey:@"data" failoverHandler:nil];
@@ -1081,13 +1081,13 @@ static NSString *getKeychainString(NSString *key, NSError **error)
                                              [names addObject:d[@"name"]];
                                              [rates addObject:d[@"rate"]];
                                              if ([d[@"code"] isEqual:@"USD"]) {
-                                                 self.mazaPerBTC = [self.mazaUSDPrice doubleValue]/[d[@"rate"] doubleValue];
+                                                 self.coinPerBTC = [self.coinUSDPrice doubleValue]/[d[@"rate"] doubleValue];
                                              }
                                          }
                                          
                                          NSMutableArray *new_rates =[NSMutableArray array];
                                          for (NSNumber *d in rates) {
-                                             [new_rates addObject:[NSNumber numberWithDouble:([d doubleValue]*self.mazaPerBTC)]];
+                                             [new_rates addObject:[NSNumber numberWithDouble:([d doubleValue]*self.coinPerBTC)]];
                                          }
                                          
                                          _currencyCodes = codes;
@@ -1108,7 +1108,7 @@ static NSString *getKeychainString(NSString *key, NSError **error)
                                              }
                                          });
                                          
-                                         // Only used for Bitcoin Application - Not Maza FIXME?
+                                         // Only used for Bitcoin Application - FIXME?
                                          //[self updateFeePerKb];
                                      }] resume];
     
@@ -1116,7 +1116,7 @@ static NSString *getKeychainString(NSString *key, NSError **error)
 }
 
 
-- (void)refreshBitcoinMazaPrice{
+- (void)refreshBitcoinCoinPrice{
     if (! _wallet) return;
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -1129,7 +1129,7 @@ static NSString *getKeychainString(NSString *key, NSError **error)
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateExchangeRate) object:nil];
     [self performSelector:@selector(updateExchangeRate) withObject:nil afterDelay:60.0];
 
-    [self getMazaPrice];
+    [self getCoinPrice];
 
 //    [self loadTicker2:TICKER_URL withJSONKey:@"body" failoverHandler:^{
   //      [self loadTicker2:TICKER_FAILOVER_URL withJSONKey:@"data" failoverHandler:nil];
@@ -1167,7 +1167,7 @@ static NSString *getKeychainString(NSString *key, NSError **error)
 completion:(void (^)(NSArray *utxos, NSArray *amounts, NSArray *scripts, NSError *error))completion
 {
     NSURL *u = [NSURL URLWithString:[NSString stringWithFormat:UNSPENT_URL, @"", address]];
-#if MAZA_TESTNET
+#if DVT_TESTNET
     u = [NSURL URLWithString:[NSString stringWithFormat:UNSPENT_URL, @"test.", address]];
 #endif
     NSURLRequest *req = [NSURLRequest requestWithURL:u cachePolicy:NSURLRequestReloadIgnoringCacheData
@@ -1192,7 +1192,7 @@ completion:(void (^)(NSArray *utxos, NSArray *amounts, NSArray *scripts, NSError
 
         if (! [json isKindOfClass:[NSArray class]]) {
             completion(nil, nil, nil,
-                       [NSError errorWithDomain:@"MazaCash" code:417 userInfo:@{NSLocalizedDescriptionKey:
+                       [NSError errorWithDomain:@"DeVaultCash" code:417 userInfo:@{NSLocalizedDescriptionKey:
                         [NSString stringWithFormat:NSLocalizedString(@"unexpected response from %@", nil), u.host]}]);
             return;
         }
@@ -1206,7 +1206,7 @@ completion:(void (^)(NSArray *utxos, NSArray *amounts, NSArray *scripts, NSError
                 ! [utxo[@"scriptPubKey"] hexToData] ||
                 ! [utxo[@"amount"] isKindOfClass:[NSNumber class]]) {
                 completion(nil, nil, nil,
-                           [NSError errorWithDomain:@"MazaCash" code:417 userInfo:@{NSLocalizedDescriptionKey:
+                           [NSError errorWithDomain:@"DevaultCash" code:417 userInfo:@{NSLocalizedDescriptionKey:
                             [NSString stringWithFormat:NSLocalizedString(@"unexpected response from %@", nil),
                              u.host]}]);
                 return;
@@ -1215,7 +1215,7 @@ completion:(void (^)(NSArray *utxos, NSArray *amounts, NSArray *scripts, NSError
             o.hash = *(const UInt256 *)[utxo[@"txid"] hexToData].reverse.bytes;
             o.n = [utxo[@"vout"] unsignedIntValue];
             [utxos addObject:brutxo_obj(o)];
-#ifdef USE_MAZA
+#ifdef USE_DVT
             [amounts addObject:[NSNumber numberWithFloat:[utxo[@"amount"] floatValue]*1e8]];
 #else
             [amounts addObject:utxo[@"amount"]];
@@ -1235,7 +1235,7 @@ completion:(void (^)(BRTransaction *tx, uint64_t fee, NSError *error))completion
 {
     if (! completion) return;
 
-    if ([privKey isValidMazaBIP38Key]) {
+    if ([privKey isValidCoinBIP38Key]) {
         UIAlertView *v = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"password protected key", nil)
                           message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", nil)
                           otherButtonTitles:NSLocalizedString(@"ok", nil), nil];
@@ -1253,13 +1253,13 @@ completion:(void (^)(BRTransaction *tx, uint64_t fee, NSError *error))completion
     BRKey *key = [BRKey keyWithPrivateKey:privKey];
 
     if (! key.address) {
-        completion(nil, 0, [NSError errorWithDomain:@"MazaCash" code:187 userInfo:@{NSLocalizedDescriptionKey:
+        completion(nil, 0, [NSError errorWithDomain:@"DevaultCash" code:187 userInfo:@{NSLocalizedDescriptionKey:
                             NSLocalizedString(@"not a valid private key", nil)}]);
         return;
     }
 
     if ([self.wallet containsAddress:key.address]) {
-        completion(nil, 0, [NSError errorWithDomain:@"MazaCash" code:187 userInfo:@{NSLocalizedDescriptionKey:
+        completion(nil, 0, [NSError errorWithDomain:@"DevaultCash" code:187 userInfo:@{NSLocalizedDescriptionKey:
                             NSLocalizedString(@"this private key is already in your wallet", nil)}]);
         return;
     }
@@ -1284,7 +1284,7 @@ completion:(void (^)(BRTransaction *tx, uint64_t fee, NSError *error))completion
         }
 
         if (balance == 0) {
-            completion(nil, 0, [NSError errorWithDomain:@"MazaCash" code:417 userInfo:@{NSLocalizedDescriptionKey:
+            completion(nil, 0, [NSError errorWithDomain:@"DevaultCash" code:417 userInfo:@{NSLocalizedDescriptionKey:
                                 NSLocalizedString(@"this private key is empty", nil)}]);
             return;
         }
@@ -1293,7 +1293,7 @@ completion:(void (^)(BRTransaction *tx, uint64_t fee, NSError *error))completion
         if (fee) feeAmount = [self.wallet feeForTxSize:tx.size + 34 + (key.publicKey.length - 33)*tx.inputHashes.count];
 
         if (feeAmount + self.wallet.minOutputAmount > balance) {
-            completion(nil, 0, [NSError errorWithDomain:@"MazaCash" code:417 userInfo:@{NSLocalizedDescriptionKey:
+            completion(nil, 0, [NSError errorWithDomain:@"DevaultCash" code:417 userInfo:@{NSLocalizedDescriptionKey:
                                 NSLocalizedString(@"transaction fees would cost more than the funds available on this "
                                                   "private key (due to tiny \"dust\" deposits)",nil)}]);
             return;
@@ -1302,7 +1302,7 @@ completion:(void (^)(BRTransaction *tx, uint64_t fee, NSError *error))completion
         [tx addOutputAddress:self.wallet.changeAddress amount:balance - feeAmount];
 
         if (! [tx signWithPrivateKeys:@[privKey]]) {
-            completion(nil, 0, [NSError errorWithDomain:@"MazaCash" code:401 userInfo:@{NSLocalizedDescriptionKey:
+            completion(nil, 0, [NSError errorWithDomain:@"DevaultCash" code:401 userInfo:@{NSLocalizedDescriptionKey:
                                 NSLocalizedString(@"error signing transaction", nil)}]);
             return;
         }

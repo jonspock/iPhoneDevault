@@ -31,8 +31,8 @@
 
 #define BIP32_SEED_KEY "Bitcoin seed"
 
-#ifdef USE_MAZA
-#ifdef MAZA_TESTNET
+#ifdef USE_DVT
+#ifdef DVT_TESTNET
 #define BIP32_XPRV     "\x04\x35\x83\x94" //// BIP32 prvkeys start with 'tpub'
 #define BIP32_XPUB     "\x04\x35\x87\xcf" //// BIP32 pubkeys start with 'tprv'
 #else
@@ -116,8 +116,8 @@ static NSString *serialize(uint8_t depth, uint32_t fingerprint, uint32_t child, 
 - (NSData *)masterPublicKeyFromSeed:(NSData *)seed
 {
     if (! seed) return nil;
-#ifdef USE_MAZA
-    NSData *mpk = [self getDerivedKeychainFromSeed:seed WithPath:@"m/44'/13'/0'"];
+#ifdef USE_DVT
+    NSData *mpk = [self getDerivedKeychainFromSeed:seed WithPath:@"m/44'/339'/0'"];
 #else
     NSData *mpk = [self getDerivedKeychainFromSeed:seed WithPath:@"m/44'/0'/0'"];
 #endif
@@ -157,10 +157,10 @@ static NSString *serialize(uint8_t depth, uint32_t fingerprint, uint32_t child, 
     NSData *key_data = [mpk subdataWithRange:NSMakeRange(0,32)];
     NSData *ch_data = [mpk subdataWithRange:NSMakeRange(32,32)];
 
-    uint8_t version = MAZA_PRIVKEY;
+    uint8_t version = DVT_PRIVKEY;
     
-#if MAZA_TESTNET
-    version = MAZA_PRIVKEY_TEST;
+#if DVT_TESTNET
+    version = DVT_PRIVKEY_TEST;
 #endif
     
     int first = (internal) ? 1 : 0;
@@ -203,10 +203,10 @@ static NSString *serialize(uint8_t depth, uint32_t fingerprint, uint32_t child, 
     HMAC(&I, SHA512, sizeof(UInt512), BIP32_SEED_KEY, strlen(BIP32_SEED_KEY), seed.bytes, seed.length);
     
     UInt256 secret = *(UInt256 *)&I, chain = *(UInt256 *)&I.u8[sizeof(UInt256)];
-    uint8_t version = MAZA_PRIVKEY;
+    uint8_t version = DVT_PRIVKEY;
     
-#if MAZA_TESTNET
-    version = MAZA_PRIVKEY_TEST;
+#if DVT_TESTNET
+    version = DVT_PRIVKEY_TEST;
 #endif
     
     // path m/1H/0 (same as copay uses for bitauth)

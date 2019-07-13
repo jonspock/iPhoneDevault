@@ -30,7 +30,7 @@
 #import "BRPeerManager.h"
 #import "BREventManager.h"
 #import "BRUserDefaultsSwitchCell.h"
-#import "maza-Swift.h"
+#import "devios-Swift.h"
 #include <WebKit/WebKit.h>
 #include <asl.h>
 
@@ -445,7 +445,7 @@ _switch_cell:
     UILabel *l = (id)[c.view viewWithTag:411];
     NSMutableAttributedString *s = [[NSMutableAttributedString alloc] initWithAttributedString:l.attributedText];
     
-#if MAZA_TESTNET
+#if DVT_TESTNET
     [s replaceCharactersInRange:[s.string rangeOfString:@"%net%"] withString:@"%net% (testnet)"];
 #endif
     [s replaceCharactersInRange:[s.string rangeOfString:@"%ver%"]
@@ -472,7 +472,7 @@ _switch_cell:
     [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", nil)
       message:[NSString stringWithFormat:@"\n%@\n\n%@\n\n%@\n",
                [NSLocalizedString(@"\nDO NOT let anyone see your recovery\n"
-                                  "phrase or they can spend your maza.\n", nil)
+                                  "phrase or they can spend your coins.\n", nil)
                 stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]],
                [NSLocalizedString(@"\nNEVER type your recovery phrase into\n"
                                   "password managers or elsewhere.\n"
@@ -488,7 +488,7 @@ _switch_cell:
     UIAlertController *myAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"WARNING", nil)
     message:[NSString stringWithFormat:@"\n%@\n\n%@\n\n%@\n",
                                                                                         [NSLocalizedString(@"\nDO NOT let anyone see your recovery\n"
-                                                                                                           "phrase or they can spend your maza.\n", nil)
+                                                                                                           "phrase or they can spend your coins.\n", nil)
                                                                                          stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]],
                                                                                         [NSLocalizedString(@"\nNEVER type your recovery phrase into\n"
                                                                                                            "password managers or elsewhere.\n"
