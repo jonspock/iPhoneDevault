@@ -96,8 +96,7 @@
 #define FEE_PER_KB_KEY              @"FEE_PER_KB"
 
 #endif
-//#define DVT_PRICE_URL @"https://coinmarketcap-nexuist.rhcloud.com/api/dvt/price"
-#define DVT_PRICE_URL @"https://min-api.cryptocompare.com/data/price?fsym=MZC&tsyms=USD"
+#define PRICE_URL @"https://api.coingecko.com/api/v3/simple/price?ids=devault&vs_currencies=usd"
 
 
 static BOOL setKeychainData(NSData *data, NSString *key, BOOL authenticated)
@@ -951,7 +950,7 @@ static NSString *getKeychainString(NSString *key, NSError **error)
 {
     if (self.reachability.currentReachabilityStatus == NotReachable) return;
     
-    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:DVT_PRICE_URL]
+    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:PRICE_URL]
                                          cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
     
     [[[NSURLSession sharedSession] dataTaskWithRequest:req
@@ -963,7 +962,7 @@ static NSString *getKeychainString(NSString *key, NSError **error)
                                          }
                                          
                                          NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                                         
+
                                          double usd = [[json objectForKey:@"USD"] doubleValue];
                                          /*
                                           NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
@@ -974,7 +973,7 @@ static NSString *getKeychainString(NSString *key, NSError **error)
                                           */
                                          NSNumber *price = [NSNumber numberWithDouble:usd];
                                          NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
-                                         
+   
                                          self.localCurrencyCode = _localCurrencyCode; // update localCurrencyPrice and localFormat.maximum
 
                                          [defs setObject:@"USD" forKey:CURRENCY_CODES_KEY];
@@ -997,7 +996,7 @@ static NSString *getKeychainString(NSString *key, NSError **error)
 - (void)getCoinPrice
 {
     if (self.reachability.currentReachabilityStatus == NotReachable) return;
-    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:DVT_PRICE_URL]
+    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:PRICE_URL]
                                          cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
     
     

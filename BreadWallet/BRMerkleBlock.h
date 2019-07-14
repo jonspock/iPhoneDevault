@@ -25,7 +25,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define BLOCK_INTERVAL_SECS 120 // 2 minute block for Maza
+#define BLOCK_INTERVAL_SECS 120 // 2 minute blocks
 #define BLOCK_UNKNOWN_HEIGHT      INT32_MAX
 #define LWMA_BLOCKS 72
 #define BLOCK_DIFFICULTY_INTERVAL 72 

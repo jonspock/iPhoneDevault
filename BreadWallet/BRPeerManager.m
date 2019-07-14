@@ -1080,7 +1080,7 @@ static const char *dns_seeds[] = {
 - (void)peer:(BRPeer *)peer disconnectedWithError:(NSError *)error
 {
     NSLog(@"%@:%d disconnected%@%@", peer.host, peer.port, (error ? @", " : @""), (error ? error : @""));
-    
+  
     if ([error.domain isEqual:@"DevaultCash"] && error.code != DVT_TIMEOUT_CODE) {
         [self peerMisbehavin:peer]; // if it's protocol error other than timeout, the peer isn't following the rules
     }
@@ -1099,6 +1099,7 @@ static const char *dns_seeds[] = {
         if (self.connectFailures > MAX_CONNECT_FAILURES) self.connectFailures = MAX_CONNECT_FAILURES;
     }
 
+    bool fg_connect = true;
     if (! self.connected && self.connectFailures == MAX_CONNECT_FAILURES) {
         [self syncStopped];
         
@@ -1111,15 +1112,23 @@ static const char *dns_seeds[] = {
             [[NSNotificationCenter defaultCenter] postNotificationName:BRPeerManagerSyncFailedNotification
              object:nil userInfo:(error) ? @{@"error":error} : nil];
         });
+      fg_connect = false;
+    } else if (self.connectFailures < MAX_CONNECT_FAILURES && (self.taskId != UIBackgroundTaskInvalid)) {
+      [self connect]; // try connecting to another peer
+      fg_connect = false;
     }
-    else if (self.connectFailures < MAX_CONNECT_FAILURES && (self.taskId != UIBackgroundTaskInvalid ||
-             [UIApplication sharedApplication].applicationState != UIApplicationStateBackground)) {
-        [self connect]; // try connecting to another peer
+    if (fg_connect) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        if ([UIApplication sharedApplication].applicationState != UIApplicationStateBackground) {
+          [self connect];
+        }
+      });
     }
-    
+  
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:BRPeerManagerTxStatusNotification object:nil];
     });
+
 }
 
 - (void)peer:(BRPeer *)peer relayedPeers:(NSArray *)peers

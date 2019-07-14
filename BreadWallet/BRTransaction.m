@@ -28,8 +28,6 @@
 #import "NSString+Bitcoin.h"
 #import "NSMutableData+Bitcoin.h"
 #import "NSData+Bitcoin.h"
-//#import "NSString+Maza.h"
-//#import "NSData+Maza.h"
 #import "BRWalletManager.h"
 
 #define TX_VERSION    0x00000001u

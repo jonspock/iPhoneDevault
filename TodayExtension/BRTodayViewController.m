@@ -29,8 +29,8 @@
 #import "UIImage+Utils.h"
 #import <NotificationCenter/NotificationCenter.h>
 
-#define SCAN_URL @"maza://x-callback-url/scanqr"
-#define OPEN_URL @"maza://"
+#define SCAN_URL @"devault://x-callback-url/scanqr"
+#define OPEN_URL @"devault://"
 
 @interface BRTodayViewController () <NCWidgetProviding>
 

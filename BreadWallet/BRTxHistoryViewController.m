@@ -564,8 +564,8 @@ static NSString *dateFormat(NSString *template)
             long adjustedRow = !buyEnabled ? indexPath.row + 1 : indexPath.row;
             switch (adjustedRow) {
                 case 0:
-                    cell.textLabel.text = NSLocalizedString(@"Buy Maza", nil);
-                    cell.imageView.image = [UIImage imageNamed:@"maza-buy-blue-small"];
+                    cell.textLabel.text = NSLocalizedString(@"Buy DVG", nil);
+                    cell.imageView.image = [UIImage imageNamed:@"buy-blue-small"];
                     break;
                     
                 case 1:
