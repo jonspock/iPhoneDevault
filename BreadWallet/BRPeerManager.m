@@ -43,11 +43,7 @@
 #define NSLog(...)
 #endif
 
-#ifdef USE_DVT
 #define FIXED_PEERS
-#else
-#define FIXED_PEERS          @"FixedPeers"
-#endif
 
 #define PROTOCOL_TIMEOUT     20.0
 #define MAX_CONNECT_FAILURES 20 // notify user of network problems after this many connect failures in a row
@@ -59,12 +55,13 @@
 #if DVT_TESTNET
 
 static const struct { uint32_t height; char *hash; time_t timestamp; uint32_t target; } checkpoint_array[] = {
-  { 0, "00000000afe7906457b6aaf8ffd84934746a07769fb12e45436ee6", 1556739176, 0x1d00ffffu },
-  { 24000, "0000000000034ff14527d94d719caa5e47fdd020c34cc2c0d7795120ebcbc0e1",1558728055, 0x1f03d35du }
+  { 0, "00000000ed6c30b2e78a0eff7d20692c14099ce8eb04e205fcc08c474cfd6675", 1559660403, 0x1d00ffffu },
+  { 1000, "001a456759f7fd83e26e9a10c2a10b0e2149f693e93539e4028aa46db19e5f95",1560772669, 0x1f336808u }
 };
 
 static const char *dns_seeds[] = {
-  "127.0.0.1"
+  "127.0.0.1",
+  "69.172.229.236"
 };
 
 #else // main net

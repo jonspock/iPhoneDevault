@@ -26,20 +26,10 @@
 #import <Foundation/Foundation.h>
 #import "NSData+Bitcoin.h"
 
-#ifdef USE_DVT
-
 #if DVT_TESTNET
 #define DVT_STANDARD_PORT          39039
 #else
 #define DVT_STANDARD_PORT          33039
-#endif
-
-#else
-#if DVT_TESTNET
-#define DVT_STANDARD_PORT 18333
-#else
-#define DVT_STANDARD_PORT 8333
-#endif
 #endif
 
 #define DVT_TIMEOUT_CODE  1001

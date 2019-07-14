@@ -25,20 +25,11 @@
 
 #import <Foundation/Foundation.h>
 
-#ifdef USE_DVT
 #if DVT_TESTNET
 #define DVT_MAGIC_NUMBER 0xf4f3e5f4u
 #else
 #define DVT_MAGIC_NUMBER 0x039c3adeu
 #endif
-#else
-#if DVT_TESTNET
-#define DVT_MAGIC_NUMBER 0x0709110bu
-#else
-#define DVT_MAGIC_NUMBER 0xd9b4bef9u
-#endif
-#endif
-
 
 CF_IMPLICIT_BRIDGING_ENABLED
 

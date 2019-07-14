@@ -25,7 +25,6 @@
 
 #import <Foundation/Foundation.h>
 
-#ifdef USE_DVT
 #define DVT_PUBKEY_ADDRESS      0
 #define DVT_SCRIPT_ADDRESS      5
 #define DVT_PRIVKEY             128
@@ -33,14 +32,13 @@
 #define DVT_PUBKEY_ADDRESS_TEST 88
 #define DVT_SCRIPT_ADDRESS_TEST 188
 #define DVT_PRIVKEY_TEST        239
-#else
-#define DVT_PUBKEY_ADDRESS      0
-#define DVT_SCRIPT_ADDRESS      5
-#define DVT_PRIVKEY_TEST        239
-#define DVT_PUBKEY_ADDRESS_TEST 111
-#define DVT_SCRIPT_ADDRESS_TEST 196
-#define DVT_PRIVKEY             128
-#endif
+
+
+
+//#define DVT_PUBKEY_ADDRESS_TEST 111
+//#define DVT_SCRIPT_ADDRESS_TEST 196
+//#define DVT_PRIVKEY             128
+
 
 #define BIP38_NOEC_PREFIX      0x0142
 #define BIP38_EC_PREFIX        0x0143
