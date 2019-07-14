@@ -28,7 +28,12 @@
 #import "NSData+Bitcoin.h"
 
 #define MAX_TIME_DRIFT    (2*60*60)     // the furthest in the future a block is allowed to be timestamped
+
+#ifdef DVT_TESTNET
+#define MAX_PROOF_OF_WORK 0x2000ffffu   // highest value for difficulty target (higher values are less difficult)
+#else
 #define MAX_PROOF_OF_WORK 0x1e0fffffu   // highest value for difficulty target (higher values are less difficult)
+#endif
 #define TARGET_TIMESPAN   (14*24*60*60) // the targeted timespan between difficulty target adjustments
 
 // from https://en.bitcoin.it/wiki/Protocol_specification#Merkle_Trees
@@ -401,14 +406,18 @@ UInt256 multiplyThis32 (UInt256 a,uint32_t b)
         return MAX_PROOF_OF_WORK;
     }
 
+#ifdef DVT_TESTNET
+    if (self.timestamp > previousBlock.timestamp + 10*BLOCK_INTERVAL_SECS) {
+      return MAX_PROOF_OF_WORK;
+    }
+#endif
+  
     const int64_t T = BLOCK_INTERVAL_SECS; // 2 minute block times
     const int N = LWMA_BLOCKS;
     const int k = (N+1) * T / 2;  // ignore adjust 0.9989^(500/N) from python code
     const int dnorm = 10;
 
     int t = 0, j = 0;
-  
-    //int nHeight = previousBlock.height + 1;
 
     // Create Array of the last LWMA_BLOCKS with index starting at 0 for the oldest block
   
