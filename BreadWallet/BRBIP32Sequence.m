@@ -118,7 +118,11 @@ static NSString *serialize(uint8_t depth, uint32_t fingerprint, uint32_t child, 
 {
     if (! seed) return nil;
 #ifdef USE_DVT
+#ifdef DVT_TESTNET
+    NSData *mpk = [self getDerivedKeychainFromSeed:seed WithPath:@"m/44'/1'/0'"];
+#else
     NSData *mpk = [self getDerivedKeychainFromSeed:seed WithPath:@"m/44'/339'/0'"];
+#endif
 #else
     NSData *mpk = [self getDerivedKeychainFromSeed:seed WithPath:@"m/44'/0'/0'"];
 #endif
