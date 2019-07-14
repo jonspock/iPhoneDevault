@@ -26,9 +26,9 @@
 #import <Foundation/Foundation.h>
 
 #ifdef USE_DVT
-#define DVT_PUBKEY_ADDRESS      50
-#define DVT_SCRIPT_ADDRESS      9
-#define DVT_PRIVKEY             224
+#define DVT_PUBKEY_ADDRESS      0
+#define DVT_SCRIPT_ADDRESS      5
+#define DVT_PRIVKEY             128
 // TESTNET
 #define DVT_PUBKEY_ADDRESS_TEST 88
 #define DVT_SCRIPT_ADDRESS_TEST 188

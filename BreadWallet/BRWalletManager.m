@@ -278,6 +278,12 @@ static NSString *getKeychainString(NSString *key, NSError **error)
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([UIApplication sharedApplication].protectedDataAvailable) [self protectedInit];
     });
+  
+  
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents folder
+    NSLog(@"documentsDirectory=%@",documentsDirectory);
+  
     return self;
 }
 
@@ -908,13 +914,14 @@ static NSString *getKeychainString(NSString *key, NSError **error)
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
     NSUInteger i = [_currencyCodes indexOfObject:code];
 
-    if (i == NSNotFound) code = DEFAULT_CURRENCY_CODE, i = [_currencyCodes indexOfObject:DEFAULT_CURRENCY_CODE];
+    if (i == NSNotFound) {
+      code = DEFAULT_CURRENCY_CODE;
+      i = [_currencyCodes indexOfObject:DEFAULT_CURRENCY_CODE];
+    }
     _localCurrencyCode = [code copy];
 
-    
     NSArray *prices = [defs objectForKey:CURRENCY_PRICES_KEY];
-    
-    
+  
     if (i < _currencyPrices.count && self.secureTime + 3*24*60*60 > [NSDate timeIntervalSinceReferenceDate]) {
         self.localPrice = _currencyPrices[i]; // don't use exchange rate data more than 72hrs out of date
     }
@@ -984,10 +991,6 @@ static NSString *getKeychainString(NSString *key, NSError **error)
                                          [self refreshBitcoinCoinPrice];
                                           NSLog(@"exchange rate updated to %@/%@", [self localCurrencyStringForAmount:SATOSHIS],
                                                [self stringForAmount:SATOSHIS]);
-                                         
-                                         
-                                         // NSLog(@"exchange rate updated to %@/%@", [self localCurrencyStringForAmount:SATOSHIS],
-                                         //[self stringForAmount:SATOSHIS]);
                                      }]
                                   resume];
 
@@ -1008,12 +1011,17 @@ static NSString *getKeychainString(NSString *key, NSError **error)
                                          }
                                          NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
                                          double usd = [[json objectForKey:@"USD"] doubleValue];
+
                                          NSNumber *price = [NSNumber numberWithDouble:usd];
                                          self.coinUSDPrice = price;
+                                       
                                          NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+                                         [defs setObject:@"USD" forKey:CURRENCY_CODES_KEY];
+                                         [defs setObject:@"US Dollar" forKey:CURRENCY_NAMES_KEY];
                                          [defs setObject:price forKey:DVT_USD_KEY];
                                          [defs synchronize];
-                                         [self loadTicker2:TICKER_URL withJSONKey:@"body" failoverHandler:^{
+                                         
+                                          [self loadTicker2:TICKER_URL withJSONKey:@"body" failoverHandler:^{
                                              [self loadTicker2:TICKER_FAILOVER_URL withJSONKey:@"data" failoverHandler:nil];
                                          }];
 
